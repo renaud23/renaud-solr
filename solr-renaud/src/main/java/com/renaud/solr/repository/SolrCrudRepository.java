@@ -8,68 +8,57 @@ public class SolrCrudRepository <T, ID extends Serializable> implements CrudRepo
 
 	@Override
 	public <S extends T> S save(S entity) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
 	}
 
 	@Override
 	public <S extends T> Iterable<S> save(Iterable<S> entities) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
 	}
 
 	@Override
 	public T findOne(ID id) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
 	}
 
 	@Override
 	public boolean exists(ID id) {
-		// TODO Auto-generated method stub
-		return false;
+		throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
 	}
 
 	@Override
 	public Iterable<T> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
 	}
 
 	@Override
 	public Iterable<T> findAll(Iterable<ID> ids) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
 	}
 
 	@Override
 	public long count() {
-		// TODO Auto-generated method stub
-		return 0;
+		throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
 	}
 
 	@Override
 	public void delete(ID id) {
-		// TODO Auto-generated method stub
-		
+		throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
 	}
 
 	@Override
 	public void delete(T entity) {
-		// TODO Auto-generated method stub
-		
+		throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
 	}
 
 	@Override
 	public void delete(Iterable<? extends T> entities) {
-		// TODO Auto-generated method stub
-		
+		throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
 	}
 
 	@Override
 	public void deleteAll() {
-		// TODO Auto-generated method stub
-		
+		throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
 	}
 
 }

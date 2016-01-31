@@ -63,6 +63,11 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.7.14</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-solr</artifactId>
+			<version>1.5.2.RELEASE</version>
+		</dependency>
 		
 		
 	<dependency>
