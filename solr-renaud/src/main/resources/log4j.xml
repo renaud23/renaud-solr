@@ -33,7 +33,7 @@
 	</logger>
 
 	<logger name="org.springframework" additivity="false">
-		<level value="INFO" />
+		<level value="ERROR" />
 		<appender-ref ref="console" />
 		<appender-ref ref="logger-base" />
 		<appender-ref ref="logger-error" />

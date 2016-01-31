@@ -1,9 +1,14 @@
 package com.renaud.solr.test.model;
 
-
+import com.renaud.solr.annotation.SolrField;
+import com.renaud.solr.annotation.SolrId;
 
 public class Client {
+	@SolrId
+	private String id;
+	@SolrField(field = "nom")
 	private String nom;
+	@SolrField(field = "prenom")
 	private String prenom;
 	
 	
@@ -18,6 +23,12 @@ public class Client {
 	}
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	

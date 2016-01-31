@@ -1,4 +1,6 @@
-package com.reanud.solr.test;
+package com.reanud.solr.repository;
+
+
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -7,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 
 @Profile("test")
 @Configuration
-@ComponentScan(basePackages = { "com.renaud.*" })
+@ComponentScan( basePackages = { "com.renaud.solr" })
 public class ConfigurationTest {
 
 	@Bean

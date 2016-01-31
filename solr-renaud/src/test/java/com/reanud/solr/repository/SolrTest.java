@@ -1,4 +1,4 @@
-package com.reanud.solr.test;
+package com.reanud.solr.repository;
 
 
 
