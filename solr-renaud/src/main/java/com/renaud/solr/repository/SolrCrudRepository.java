@@ -2,23 +2,23 @@ package com.renaud.solr.repository;
 
 import java.io.IOException;
 import java.io.Serializable;
-
-import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.data.repository.CrudRepository;
 
-public class SolrCrudRepository <T, ID extends Serializable> implements CrudRepository<T, ID> {
+import com.renaud.solr.repository.server.SolrClientFactory;
+
+public abstract class SolrCrudRepository <T, ID extends Serializable> implements CrudRepository<T, ID> {
 	
-	private SolrClient solrclient;
+	public abstract SolrClientFactory getClientFactory();
 
 	@Override
 	public <S extends T> S save(S entity) {
 		SolrInputDocument document = new SolrInputDocument();
-		
+		document.addField("", null);
 		try {
-			solrclient.add(document);
+			
+			getClientFactory().getClient().add(document);
 			
 			return null;
 		} catch (SolrServerException | IOException e) {

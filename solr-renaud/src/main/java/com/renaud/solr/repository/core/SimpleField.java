@@ -1,4 +1,4 @@
-package com.renaud.solr.repository.service;
+package com.renaud.solr.repository.core;
 
 public class SimpleField<U> implements SolrBeanService<U>{
 

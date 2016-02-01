@@ -6,8 +6,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.reanud.solr.repository.BaseTest;
 import com.renaud.solr.annotation.tools.CachAnnotation;
+import com.renaud.solr.repository.BaseTest;
 import com.renaud.solr.test.model.Client;
 
 public class CachAnnotationTest extends BaseTest{
