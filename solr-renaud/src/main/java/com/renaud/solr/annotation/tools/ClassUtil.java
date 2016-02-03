@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 /**
  * @author Kupal 3kb
  */
@@ -77,6 +79,6 @@ public class ClassUtil {
                 annotatedFields.add(field);
         }
 
-        return annotatedFields.toArray(new Field[annotatedFields.size()]);
+        return annotatedFields.toArray(new Field[annotatedFields.size()]);                                               
     }
 }

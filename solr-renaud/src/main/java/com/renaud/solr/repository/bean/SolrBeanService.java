@@ -1,10 +1,14 @@
 package com.renaud.solr.repository.bean;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
-public interface SolrBeanService<U> {
+import com.renaud.solr.repository.bean.field.FieldValue;
+
+public interface SolrBeanService<U, ID extends Serializable> {
 	
-	public Map<String, Object> read(U u);
+	public List<FieldValue> read(U u);
 	
 	public U fill();
 	

@@ -12,6 +12,8 @@
 
   
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
+   <field name="nom" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+   <field name="prenom" type="string" indexed="true" stored="true" required="true" multiValued="false" />
 
    
    <dynamicField name="*_i"  type="int"    indexed="true"  stored="true"/>

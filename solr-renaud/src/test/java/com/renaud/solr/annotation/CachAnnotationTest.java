@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.renaud.solr.annotation.tools.CachAnnotation;
-import com.renaud.solr.repository.BaseTest;
+import com.renaud.solr.test.base.BaseTest;
 import com.renaud.solr.test.model.Client;
 
 public class CachAnnotationTest extends BaseTest{
@@ -18,8 +18,8 @@ public class CachAnnotationTest extends BaseTest{
 	@Test
 	public void getAnnotedField(){
 		// W
-		Field[] fields = cachAnnotation.getAnnotedField(Client.class, SolrField.class);
-		Field[] fieldId = cachAnnotation.getAnnotedField(Client.class, SolrId.class);
+		Field[] fields = cachAnnotation.getAnnotedFields(Client.class, SolrField.class);
+		Field[] fieldId = cachAnnotation.getAnnotedFields(Client.class, SolrId.class);
 		// T
 		Assert.assertNotNull(fields.length);
 		Assert.assertEquals(2, fields.length);

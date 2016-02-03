@@ -4,18 +4,24 @@ import java.io.IOException;
 import java.io.Serializable;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
-
+import com.renaud.solr.repository.bean.SolrBeanService;
 import com.renaud.solr.repository.server.SolrClientFactory;
 
 public abstract class SolrCrudRepository <T, ID extends Serializable> implements CrudRepository<T, ID> {
 	
 	public abstract SolrClientFactory getClientFactory();
+	
+	@Autowired
+	private SolrBeanService<T,ID> solrBeanService;
 
 	@Override
 	public <S extends T> S save(S entity) {
 		SolrInputDocument document = new SolrInputDocument();
-		document.addField("", null);
+		solrBeanService
+			.read(entity).stream()
+			.forEach((field)->{ document.addField(field.getName(), field.getValue()); });
 		try {
 			
 			getClientFactory().getClient().add(document);

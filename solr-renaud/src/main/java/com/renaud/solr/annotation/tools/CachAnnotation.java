@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class CachAnnotation {
 
 	@Cacheable
-	public Field[] getAnnotedField(Class<?> clazz, Class<? extends Annotation> annotationClass){
+	public Field[] getAnnotedFields(Class<?> clazz, Class<? extends Annotation> annotationClass){
 		return ClassUtil.getAnnotatedDeclaredFields(clazz, annotationClass, true);
 	}
 }
