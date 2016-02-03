@@ -45,5 +45,12 @@
 		<appender-ref ref="logger-base" />
 		<appender-ref ref="logger-error" />
 	</logger>
+	
+	<logger name="org.apache.commons" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="console" />
+		<appender-ref ref="logger-base" />
+		<appender-ref ref="logger-error" />
+	</logger>
 
 </log4j:configuration>

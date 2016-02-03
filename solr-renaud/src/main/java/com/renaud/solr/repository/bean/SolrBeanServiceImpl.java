@@ -26,8 +26,8 @@ public class SolrBeanServiceImpl<U,ID extends Serializable> implements SolrBeanS
 	@Override
 	public List<FieldValue> read(U bean) {
 		return Stream.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrField.class))
-						.map((field)->{ return this.read(bean, field.getAnnotation(SolrField.class), field); })
-						.collect(Collectors.toList());
+				.map((field)->{ return this.read(bean, field.getAnnotation(SolrField.class), field); })
+				.collect(Collectors.toList());
 	}
 
 	@Override

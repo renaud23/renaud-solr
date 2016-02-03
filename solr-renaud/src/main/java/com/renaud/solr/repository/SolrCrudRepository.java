@@ -2,10 +2,14 @@ package com.renaud.solr.repository;
 
 import java.io.IOException;
 import java.io.Serializable;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
+
+
 import com.renaud.solr.repository.bean.SolrBeanService;
 import com.renaud.solr.repository.server.SolrClientFactory;
 
@@ -20,10 +24,11 @@ public abstract class SolrCrudRepository <T, ID extends Serializable> implements
 	public <S extends T> S save(S entity) {
 		SolrInputDocument document = new SolrInputDocument();
 		solrBeanService
-			.read(entity).stream()
+			.read(entity)
+			.stream()
+			.filter((field)-> {return field.getValue() != null && !StringUtils.isBlank(field.getName());})
 			.forEach((field)->{ document.addField(field.getName(), field.getValue()); });
 		try {
-			
 			getClientFactory().getClient().add(document);
 			
 			return null;
