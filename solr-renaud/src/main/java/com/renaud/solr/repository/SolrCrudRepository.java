@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
@@ -31,7 +32,7 @@ public abstract class SolrCrudRepository <T, ID extends Serializable> implements
 		try {
 			getClientFactory().getClient().add(document);
 			
-			return null;
+			return entity;
 		} catch (SolrServerException | IOException e) {
 			throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
 		}
@@ -44,7 +45,14 @@ public abstract class SolrCrudRepository <T, ID extends Serializable> implements
 
 	@Override
 	public T findOne(ID id) {
-		throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
+		try {
+			SolrDocument  doc = getClientFactory().getClient().getById(id.toString());
+			
+			
+			return null;
+		} catch (SolrRepositoryException | SolrServerException | IOException e) {
+			throw new SolrRepositoryException("", e);
+		}
 	}
 
 	@Override
