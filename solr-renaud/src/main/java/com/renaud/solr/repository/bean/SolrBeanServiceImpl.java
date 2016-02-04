@@ -27,22 +27,20 @@ public class SolrBeanServiceImpl<U,ID extends Serializable> implements SolrBeanS
 
 	@Override
 	public List<FieldValue> read(U bean) {
-//		return Stream.concat(
-//				Stream.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrFields.class)),
-//				Stream.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrField.class)))				
-//					.map((field)->{ return this.read(bean, field.getAnnotation(SolrField.class), field); })
-//					.collect(Collectors.toList());
-		
-		List<FieldValue> val = Lists.newArrayList();
+		List<FieldValue> values = Lists.newArrayList();
 		Stream.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrFields.class))
-		.forEach((field)->{ Stream.of(field.getAnnotation(SolrField.class)).forEach((a)->{ val.add(this.read(bean,a,field)); }); });
-			
-			
-			
-		
-		return Stream.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrField.class))
+			.forEach((field)->{
+				
+						Stream.of(field.getAnnotation(SolrFields.class).value())
+									.map((a)->{ return this.read(bean, a, field); })
+									.forEach(values::add);
+			});
+
+		Stream.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrField.class))
 					.map((field)->{ return this.read(bean, field.getAnnotation(SolrField.class), field); })
-					.collect(Collectors.toList());
+					.forEach(values::add);
+		
+		return values;
 	}
 
 	@Override

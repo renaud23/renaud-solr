@@ -7,13 +7,15 @@ public class Client {
 	
 	@SolrId
 	private String id;
-	
 	@SolrField(field = "nom")
 	private String nom;
-	
-	@SolrField(field = "nom")
 	@SolrField(field = "prenom")
 	private String prenom;
+	@SolrField(field="adresse_rue", property="adresse.rue")
+	@SolrField(field="adresse_numero", property="adresse.numero")
+	@SolrField(field="adresse_code_postal", property="adresse.codePostal")
+	@SolrField(field="adresse_ville", property="adresse.ville")
+	private Adresse adresse;
 	
 	
 	public String getNom() {
@@ -33,6 +35,12 @@ public class Client {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public Adresse getAdresse() {
+		return adresse;
+	}
+	public void setAdresse(Adresse adresse) {
+		this.adresse = adresse;
 	}
 	
 	
