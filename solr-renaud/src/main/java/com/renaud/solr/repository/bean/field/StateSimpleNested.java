@@ -25,4 +25,10 @@ public class StateSimpleNested<U> implements SolrFieldAccess<U>{
 		}
 	}
 
+	@Override
+	public void fill(U bean, SolrField a, Field f, Object value) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

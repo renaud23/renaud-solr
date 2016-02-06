@@ -19,6 +19,18 @@ public class StateFieldFactory<U> implements SolrFieldAccess<U>{
 
 	@Override
 	public FieldValue read(U bean, SolrField a, Field f) {
+		return getStrategy(bean, a, f).read(bean, a, f);
+	}
+	
+	
+
+	@Override
+	public void fill(U bean, SolrField a, Field f, Object value) {
+		getStrategy(bean, a, f).fill(bean, a, f, value);
+	}
+	
+	
+	private SolrFieldAccess<U> getStrategy(U bean, SolrField a, Field f){
 		SolrFieldAccess<U> strategy = null;
 		
 		boolean nested = !StringUtils.isBlank(a.property());
@@ -29,9 +41,9 @@ public class StateFieldFactory<U> implements SolrFieldAccess<U>{
 		} else if(nested && !iterable){
 			strategy = stateSimpleNested;
 		} else {
-			throw new SolrRepositoryException("");
+			throw new SolrRepositoryException("...");
 		}
-		return strategy.read(bean, a, f);
+		return strategy;
 	}
 
 }

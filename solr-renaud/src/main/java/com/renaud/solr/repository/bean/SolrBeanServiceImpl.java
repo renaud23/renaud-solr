@@ -50,4 +50,10 @@ public class SolrBeanServiceImpl<U,ID extends Serializable> implements SolrBeanS
 	public FieldValue read(U bean, SolrField a, Field f){
 		return stateFieldFactory.read(bean, a, f);
 	}
+
+	@Override
+	public void fill(U bean, SolrField a, Field f, Object value) {
+		stateFieldFactory.fill(bean, a, f, value);
+		
+	}
 }
