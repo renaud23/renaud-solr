@@ -9,6 +9,6 @@ public interface SolrBeanService<U, ID extends Serializable> {
 	
 	public List<FieldValue> read(U u);
 	
-	public U fill();
+	public U fill(List<FieldValue> fields, Class<U> clazz);
 	
 }

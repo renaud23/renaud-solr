@@ -3,12 +3,9 @@ package com.renaud.solr.repository.bean;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.google.common.collect.Lists;
 import com.renaud.solr.annotation.SolrField;
 import com.renaud.solr.annotation.SolrFields;
@@ -44,7 +41,7 @@ public class SolrBeanServiceImpl<U,ID extends Serializable> implements SolrBeanS
 	}
 
 	@Override
-	public U fill() {
+	public U fill(List<FieldValue> fields, Class<U> clazz) {
 		// TODO Auto-generated method stub
 		return null;
 	}

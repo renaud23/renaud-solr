@@ -1,11 +1,14 @@
 package com.renaud.solr.test.model;
 
+import com.renaud.solr.annotation.SolrEntity;
 import com.renaud.solr.annotation.SolrField;
 import com.renaud.solr.annotation.SolrId;
 
+@SolrEntity
 public class Client {
 	
 	@SolrId
+	@SolrField(field = "id")
 	private String id;
 	@SolrField(field = "nom")
 	private String nom;

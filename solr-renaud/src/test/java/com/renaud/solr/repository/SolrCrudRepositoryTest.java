@@ -3,6 +3,7 @@ package com.renaud.solr.repository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.renaud.solr.repository.server.SolrClientFactory;
 import com.renaud.solr.test.base.BaseTest;
 import com.renaud.solr.test.model.Adresse;
 import com.renaud.solr.test.model.Client;
@@ -22,5 +23,11 @@ public class SolrCrudRepositoryTest extends BaseTest{
 		c.setAdresse(new Adresse("Aristide Briand", 3, "92170", "Vanves"));
 		
 		clientRepository.save(c);
+	}
+
+	@Override
+	public SolrClientFactory getFactory() {
+		return clientRepository.getClientFactory();
+				
 	}
 }

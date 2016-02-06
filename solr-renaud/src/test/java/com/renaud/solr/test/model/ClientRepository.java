@@ -17,5 +17,10 @@ public class ClientRepository extends SolrCrudRepository<Client, String>{
 	public SolrClientFactory getClientFactory() {
 		return solrClientFactory;
 	}
+
+	@Override
+	public Class<Client> getBeanClassType() {
+		return Client.class;
+	}
 	
 }

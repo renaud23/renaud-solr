@@ -15,6 +15,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.renaud.solr.repository.server.SolrClientFactory;
+
 @ActiveProfiles("test")
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -23,13 +25,19 @@ public abstract class BaseTest {
 	
 	private final static Logger logger = LoggerFactory.getLogger(BaseTest.class);
 	
+	public abstract SolrClientFactory getFactory();
+	
 	@After
 	public void after(){
-		String currentDir = System.getProperty("user.dir");
-		try {
-			FileUtils.deleteDirectory(new File(currentDir + "/src/test/resources/solr-home/conf/data"));
-		} catch (IOException e) {
-			logger.error("Impossible de vider le core de test.", e);
+		SolrClientFactory factory = getFactory();
+		if(factory != null){
+			String currentDir = System.getProperty("user.dir");
+			try {
+				factory.close();
+				FileUtils.deleteDirectory(new File(currentDir + "/src/test/resources/solr-home/conf/data"));
+			} catch (IOException e) {
+				logger.error("Impossible de vider le core de test.", e);
+			}
 		}
 	}
 	

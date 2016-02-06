@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.renaud.solr.annotation.tools.CachAnnotation;
+import com.renaud.solr.repository.server.SolrClientFactory;
 import com.renaud.solr.test.base.BaseTest;
 import com.renaud.solr.test.model.Client;
 
@@ -25,5 +26,10 @@ public class CachAnnotationTest extends BaseTest{
 		Assert.assertEquals(2, fields.length);
 		Assert.assertNotNull(fieldId.length);
 		Assert.assertEquals(1, fieldId.length);
+	}
+
+	@Override
+	public SolrClientFactory getFactory() {
+		return null;
 	}
 }

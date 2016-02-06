@@ -2,6 +2,9 @@ package com.renaud.solr.repository;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -12,11 +15,14 @@ import org.springframework.data.repository.CrudRepository;
 
 
 import com.renaud.solr.repository.bean.SolrBeanService;
+import com.renaud.solr.repository.bean.field.FieldValue;
 import com.renaud.solr.repository.server.SolrClientFactory;
 
 public abstract class SolrCrudRepository <T, ID extends Serializable> implements CrudRepository<T, ID> {
 	
 	public abstract SolrClientFactory getClientFactory();
+	
+	public abstract Class<T> getBeanClassType();
 	
 	@Autowired
 	private SolrBeanService<T,ID> solrBeanService;
@@ -46,12 +52,20 @@ public abstract class SolrCrudRepository <T, ID extends Serializable> implements
 	@Override
 	public T findOne(ID id) {
 		try {
-			SolrDocument  doc = getClientFactory().getClient().getById(id.toString());
+			SolrDocument  document = getClientFactory().getClient().getById(id.toString());
 			
+			List<FieldValue> fields = 
+					Stream.of(document.getFieldNames())
+						.map((name)->{ 
+							return  FieldValue.Builder.newInstance()
+										.setName("")
+										.setValue(null).build(); })
+						.collect(Collectors.toList());
 			
-			return null;
+			return solrBeanService.fill(fields, getBeanClassType());
+					
 		} catch (SolrRepositoryException | SolrServerException | IOException e) {
-			throw new SolrRepositoryException("", e);
+			throw new SolrRepositoryException("Impossible de lire dans l'index.", e);
 		}
 	}
 

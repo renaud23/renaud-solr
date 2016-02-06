@@ -1,7 +1,8 @@
 package com.renaud.solr.test.model;
 
+import com.renaud.solr.annotation.SolrEntity;
 
-
+@SolrEntity
 public class Adresse {
 
 	private String rue;	
