@@ -1,11 +1,17 @@
 package com.renaud.solr.annotation.tools;
 //package com.kupal.skypeCommand.util;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.commons.beanutils.ConstructorUtils;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Kupal 3kb
@@ -79,4 +85,28 @@ public class ClassUtil {
 
         return annotatedFields.toArray(new Field[annotatedFields.size()]);                                               
     }
+    
+    public static Object instanciateAttributs(String beanName, Object bean) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, InstantiationException {
+		// création en séquence des objets, rien trouvé de direct dans BeanUtils.
+		String[] tmp = StringUtils.split(beanName, '.');
+		Object cible = bean;
+		for (String step : tmp) {
+			Object nouveau = PropertyUtils.getProperty(cible, step);
+			if (nouveau == null) {
+				Class<?> type = PropertyUtils.getPropertyType(cible, step);
+
+				Class<?>[] c = {};
+				Constructor<?> constructor = ConstructorUtils.getAccessibleConstructor(type, c);
+				if (constructor != null)
+					nouveau = type.newInstance();
+				else
+					break;
+
+				PropertyUtils.setProperty(cible, step, nouveau);
+			}
+
+			cible = nouveau;
+		}
+		return bean;
+	}
 }

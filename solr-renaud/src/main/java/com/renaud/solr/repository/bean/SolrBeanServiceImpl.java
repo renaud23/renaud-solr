@@ -49,20 +49,14 @@ public class SolrBeanServiceImpl<U,ID extends Serializable> implements SolrBeanS
 			U bean = clazz.newInstance();
 			
 			Stream.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrField.class)).forEach(
+					(field)->{ this.fill(bean, field.getAnnotation(SolrField.class), field, fields); });
+			
+			
+			Stream.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrFields.class)).forEach(
 					(field)->{
-						SolrField a = field.getAnnotation(SolrField.class);
-						Object value = fields.stream().filter((f)-> {return Objects.equal(f.getName(), a.field());}).findFirst().get().getValue();
-						this.fill(bean, a, field, value);
+						Stream.of(field.getAnnotation(SolrFields.class).value()).forEach(
+								(a)->{ this.fill(bean, a, field, fields); });
 					});
-//			Stream.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrFields.class)).forEach(
-//					(field)->{
-//						Stream.of(field.getAnnotation(SolrFields.class).value()).forEach(
-//								(a)->{
-//									this.fill(bean, a, field, fields.stream().filter((f)-> {
-//										return Objects.equal(f.getName(), a.field());
-//									}));
-//								});
-//					});
 			 
 			return bean;
 		} catch (InstantiationException | IllegalAccessException e) {
@@ -79,6 +73,11 @@ public class SolrBeanServiceImpl<U,ID extends Serializable> implements SolrBeanS
 	public void fill(U bean, SolrField a, Field f, Object value) {
 		stateFieldFactory.fill(bean, a, f, value);
 		
+	}
+	
+	private void fill(U bean, SolrField a, Field field,  List<FieldValue> fields){
+		Object value = fields.stream().filter((f)-> {return Objects.equal(f.getName(), a.field());}).findFirst().get().getValue();
+		this.fill(bean, a, field, value);
 	}
 	
 }
