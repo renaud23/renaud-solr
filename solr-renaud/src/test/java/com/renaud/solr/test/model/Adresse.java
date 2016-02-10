@@ -43,5 +43,37 @@ public class Adresse {
 		this.ville = ville;
 	}
 	
+	public static class Builder{
+		private Adresse a;
+		
+		public static Builder newInstance(){
+			Builder b = new Builder();
+			b.a = new Adresse();
+			return b;
+		}
+		
+		public Adresse build(){
+			return a;
+		}
+		
+		public Builder setRue(String rue) {
+			a.rue = rue;
+			return this;
+		}
 	
+		public Builder setNumero(Integer numero) {
+			a.numero = numero;
+			return this;
+		}
+	
+		public Builder setCodePostal(String codePostal) {
+			a.codePostal = codePostal;
+			return this;
+		}
+	
+		public Builder setVille(String ville) {
+			a.ville = ville;
+			return this;
+		}
+	}
 }

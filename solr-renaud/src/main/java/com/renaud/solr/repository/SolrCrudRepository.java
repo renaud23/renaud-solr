@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrDocument;
@@ -55,15 +53,13 @@ public abstract class SolrCrudRepository <T, ID extends Serializable> implements
 			SolrDocument  document = getClientFactory().getClient().getById(id.toString());
 			
 			List<FieldValue> fields = 
-					Stream.of(document.getFieldNames())
-						.map((name)->{ 
+					document.getFieldNames().stream().map((name)->{ 
 							return  FieldValue.Builder.newInstance()
-										.setName("")
-										.setValue(null).build(); })
+										.setName(name)
+										.setValue(document.get(name)).build(); })
 						.collect(Collectors.toList());
 			
-			return solrBeanService.fill(fields, getBeanClassType());
-					
+			return solrBeanService.fill(fields, getBeanClassType());	
 		} catch (SolrRepositoryException | SolrServerException | IOException e) {
 			throw new SolrRepositoryException("Impossible de lire dans l'index.", e);
 		}

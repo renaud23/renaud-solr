@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.renaud.solr.annotation.SolrField;
 import com.renaud.solr.annotation.SolrFields;
 import com.renaud.solr.annotation.tools.CachAnnotation;
+import com.renaud.solr.repository.SolrRepositoryException;
 import com.renaud.solr.repository.bean.field.FieldValue;
 import com.renaud.solr.repository.bean.field.SolrFieldAccess;
 import com.renaud.solr.repository.bean.field.StateFieldFactory;
@@ -42,8 +45,29 @@ public class SolrBeanServiceImpl<U,ID extends Serializable> implements SolrBeanS
 
 	@Override
 	public U fill(List<FieldValue> fields, Class<U> clazz) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			U bean = clazz.newInstance();
+			
+			Stream.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrField.class)).forEach(
+					(field)->{
+						SolrField a = field.getAnnotation(SolrField.class);
+						Object value = fields.stream().filter((f)-> {return Objects.equal(f.getName(), a.field());}).findFirst().get().getValue();
+						this.fill(bean, a, field, value);
+					});
+//			Stream.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrFields.class)).forEach(
+//					(field)->{
+//						Stream.of(field.getAnnotation(SolrFields.class).value()).forEach(
+//								(a)->{
+//									this.fill(bean, a, field, fields.stream().filter((f)-> {
+//										return Objects.equal(f.getName(), a.field());
+//									}));
+//								});
+//					});
+			 
+			return bean;
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new SolrRepositoryException("");
+		}
 	}
 
 	@Override
@@ -56,4 +80,5 @@ public class SolrBeanServiceImpl<U,ID extends Serializable> implements SolrBeanS
 		stateFieldFactory.fill(bean, a, f, value);
 		
 	}
+	
 }

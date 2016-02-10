@@ -47,4 +47,38 @@ public class Client {
 	}
 	
 	
+	
+	public static class Builder{
+		private Client c;
+		
+		public static Builder newInstance(){
+			Builder b = new Builder();
+			b.c = new Client();
+			return b;
+		}
+		
+		public Client build(){
+			return c;
+		}
+		
+		public Builder setAdresse(Adresse adresse) {
+			c.adresse = adresse;
+			return this;
+		}
+		
+		public Builder setNom(String nom) {
+			c.nom = nom;
+			return this;
+		}
+		
+		public Builder setPrenom(String prenom) {
+			c.prenom = prenom;
+			return this;
+		}
+		
+		public Builder setId(String id) {
+			c.id = id;
+			return this;
+		}
+	}
 }

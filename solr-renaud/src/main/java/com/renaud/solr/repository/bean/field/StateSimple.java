@@ -2,6 +2,8 @@ package com.renaud.solr.repository.bean.field;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.stereotype.Component;
 import com.renaud.solr.annotation.SolrField;
@@ -25,8 +27,11 @@ public class StateSimple<U> implements SolrFieldAccess<U>{
 
 	@Override
 	public void fill(U bean, SolrField a, Field f, Object value) {
-		// TODO Auto-generated method stub
-		
+		try {
+			BeanUtils.setProperty(bean, a.field(), value);
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			throw new SolrRepositoryException("",e);
+		}
 	}
 
 }
