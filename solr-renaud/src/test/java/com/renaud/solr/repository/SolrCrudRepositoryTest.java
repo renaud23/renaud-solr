@@ -50,7 +50,7 @@ public class SolrCrudRepositoryTest extends BaseTest{
 		Assert.assertEquals("renaud@genevois", c.getId());
 		Assert.assertEquals("Genevois", c.getNom());
 		Assert.assertEquals("Renaud", c.getPrenom());
-		Assert.assertEquals("Aristide Briand", c.getAdresse().getVille());
+		Assert.assertEquals("Aristide Briand", c.getAdresse().getRue());
 		Assert.assertEquals(new Integer(3), c.getAdresse().getNumero());
 	}
 
