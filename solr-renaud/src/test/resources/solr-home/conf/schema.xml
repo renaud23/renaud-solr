@@ -11,13 +11,13 @@
    <field name="_root_" type="string" indexed="true" stored="false"/>
 
   
-   <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
-   <field name="nom" type="string" indexed="true" stored="true" required="true" multiValued="false" />
-   <field name="prenom" type="string" indexed="true" stored="true" required="true" multiValued="false" />
-<field name="adresse_rue" type="string" indexed="true" stored="true" required="false" multiValued="false" />
-<field name="adresse_numero" type="string" indexed="true" stored="true" required="false" multiValued="false" />
-<field name="adresse_ville" type="string" indexed="true" stored="true" required="false" multiValued="false" />
-<field name="adresse_code_postal" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+	<field name="id" type="string" indexed="true" stored="true" required="false" multiValued="false" /> 
+	<field name="nom" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+	<field name="prenom" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+	<field name="adresse_rue" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+	<field name="adresse_numero" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+	<field name="adresse_ville" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+	<field name="adresse_code_postal" type="string" indexed="true" stored="true" required="false" multiValued="false" />
 
    
    <dynamicField name="*_i"  type="int"    indexed="true"  stored="true"/>

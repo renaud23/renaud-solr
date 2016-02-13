@@ -8,49 +8,41 @@
 			<param name="ConversionPattern" value="%5p [%d{HH:mm:ss}] %c - %M : %m%n" />
 		</layout>
 	</appender>
-	<appender name="logger-base" class="org.apache.log4j.DailyRollingFileAppender" >
+<!-- 	<appender name="logger-base" class="org.apache.log4j.DailyRollingFileAppender" >
 		<param name="file" value="${log.path}/web4g-core.log.txt" />
 		<param name="datePattern" value="'.'yyyy-MM-dd" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%5p [%d{HH:mm:ss}] %c - %M : %m%n" />
 		</layout>
-	</appender>
-	<appender name="logger-error" class="org.apache.log4j.DailyRollingFileAppender">
+	</appender> -->
+<!-- 	<appender name="logger-error" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="file" value="${log.path}/web4g-core.err.txt" />
 		<param name="threshold" value="ERROR" />
 		<param name="datePattern" value="'.'yyyy-MM-dd" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%5p [%d{HH:mm:ss}] %c - %M : %m%n" />
 		</layout>
-	</appender>
+	</appender> -->
 	
 	<!-- Loggers -->
 	<logger name="com.renaud" additivity="false">
 		<level value="TRACE" />
 		<appender-ref ref="console" />
-		<appender-ref ref="logger-base" />
-		<appender-ref ref="logger-error" />
 	</logger>
 
 	<logger name="org.springframework" additivity="false">
 		<level value="ERROR" />
 		<appender-ref ref="console" />
-		<appender-ref ref="logger-base" />
-		<appender-ref ref="logger-error" />
 	</logger>
 	
 	<logger name="org.apache.solr" additivity="false">
 		<level value="INFO" />
 		<appender-ref ref="console" />
-		<appender-ref ref="logger-base" />
-		<appender-ref ref="logger-error" />
 	</logger>
 	
 	<logger name="org.apache.commons" additivity="false">
 		<level value="DEBUG" />
 		<appender-ref ref="console" />
-		<appender-ref ref="logger-base" />
-		<appender-ref ref="logger-error" />
 	</logger>
 
 </log4j:configuration>

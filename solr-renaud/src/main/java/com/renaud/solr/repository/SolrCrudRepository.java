@@ -10,8 +10,7 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
-
-
+import org.springframework.util.Assert;
 import com.renaud.solr.repository.bean.SolrBeanService;
 import com.renaud.solr.repository.bean.field.FieldValue;
 import com.renaud.solr.repository.server.SolrClientFactory;
@@ -27,6 +26,7 @@ public abstract class SolrCrudRepository <T, ID extends Serializable> implements
 
 	@Override
 	public <S extends T> S save(S entity) {
+		Assert.notNull(entity, "Impossible de sauvegarder un bean null.");
 		SolrInputDocument document = new SolrInputDocument();
 		solrBeanService
 			.read(entity)
@@ -44,22 +44,29 @@ public abstract class SolrCrudRepository <T, ID extends Serializable> implements
 
 	@Override
 	public <S extends T> Iterable<S> save(Iterable<S> entities) {
-		throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
+		Assert.notNull(entities, "Impossible de sauvegarder une collection null.");
+		for(S e : entities){
+			this.save(e);
+		}
+		return entities;
 	}
 
 	@Override
 	public T findOne(ID id) {
 		try {
 			SolrDocument  document = getClientFactory().getClient().getById(id.toString());
-			
-			List<FieldValue> fields = 
-					document.getFieldNames().stream().map((name)->{ 
-							return  FieldValue.Builder.newInstance()
-										.setName(name)
-										.setValue(document.get(name)).build(); })
-						.collect(Collectors.toList());
-			
-			return solrBeanService.fill(fields, getBeanClassType());	
+			if(document != null){
+				List<FieldValue> fields = 
+						document.getFieldNames().stream().map((name)->{ 
+								return  FieldValue.Builder.newInstance()
+											.setName(name)
+											.setValue(document.get(name)).build(); })
+							.collect(Collectors.toList());
+				
+				return solrBeanService.fill(fields, getBeanClassType());	
+			} else {
+				return null;
+			}
 		} catch (SolrRepositoryException | SolrServerException | IOException e) {
 			throw new SolrRepositoryException("Impossible de lire dans l'index.", e);
 		}
