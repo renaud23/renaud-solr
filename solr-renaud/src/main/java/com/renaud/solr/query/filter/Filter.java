@@ -13,5 +13,9 @@ public interface Filter {
 		return b;
 	}
 	
-
+	public static FilterComposite.Builder newFilter(){
+		FilterComposite.Builder b = FilterComposite.Builder.newInstance();
+		
+		return b;
+	}
 }
