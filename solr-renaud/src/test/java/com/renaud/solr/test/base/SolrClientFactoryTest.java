@@ -13,7 +13,6 @@ import com.renaud.solr.repository.server.SolrClientFactory;
 @Component
 public class SolrClientFactoryTest implements SolrClientFactory{
 
-
 	private SolrClient solrClient;
 	
 	@Override
@@ -38,7 +37,6 @@ public class SolrClientFactoryTest implements SolrClientFactory{
 				throw new SolrRepositoryException("Impossible de fremer le serveur.", e);
 			}
 		}
-		
 	}
 
 }

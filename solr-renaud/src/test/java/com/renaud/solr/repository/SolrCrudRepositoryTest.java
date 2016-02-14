@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
+import com.renaud.solr.query.Query;
+import com.renaud.solr.query.result.SolrResponse;
 import com.renaud.solr.repository.server.SolrClientFactory;
 import com.renaud.solr.test.base.BaseTest;
 import com.renaud.solr.test.model.Adresse;
@@ -72,6 +74,13 @@ public class SolrCrudRepositoryTest extends BaseTest{
 		clients.stream().forEach(this::findAndCompare);
 	}
 	
+	@Test
+	public void getResponse(){
+		Query query = Query.newQuery().build();
+		
+		SolrResponse<Client> response = clientRepository.getResponse(query);
+	}
+	
 	private void findAndCompare(Client client){
 		// W
 		Client fromIndex = clientRepository.findOne(client.getId());
@@ -88,4 +97,6 @@ public class SolrCrudRepositoryTest extends BaseTest{
 	public SolrClientFactory getFactory() {
 		return clientRepository.getClientFactory();	
 	}
+	
+
 }

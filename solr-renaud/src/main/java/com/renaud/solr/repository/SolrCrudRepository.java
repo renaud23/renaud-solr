@@ -9,14 +9,23 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.util.Assert;
+
+import com.renaud.solr.query.Query;
+import com.renaud.solr.query.result.SolrResponse;
 import com.renaud.solr.repository.bean.SolrBeanService;
 import com.renaud.solr.repository.bean.field.FieldValue;
 import com.renaud.solr.repository.server.SolrClientFactory;
 
-public abstract class SolrCrudRepository <T, ID extends Serializable> implements CrudRepository<T, ID> {
+public abstract class SolrCrudRepository <T, ID extends Serializable> implements CrudRepository<T, ID>, PagingAndSortingRepository<T, ID> {
 	
+
+
 	public abstract SolrClientFactory getClientFactory();
 	
 	public abstract Class<T> getBeanClassType();
@@ -112,4 +121,23 @@ public abstract class SolrCrudRepository <T, ID extends Serializable> implements
 		throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
 	}
 
+	/* ******************************************************** */
+	
+	public SolrResponse<T> getResponse(Query query){
+		throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
+	}
+	
+	/* ******************************************************** */
+	
+	@Override
+	public Iterable<T> findAll(Sort sort) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Page<T> findAll(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

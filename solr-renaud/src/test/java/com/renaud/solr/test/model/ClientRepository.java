@@ -23,4 +23,8 @@ public class ClientRepository extends SolrCrudRepository<Client, String>{
 		return Client.class;
 	}
 	
+	
+	public void query(){
+		
+	}
 }

@@ -1,5 +1,7 @@
 package com.renaud.solr.query.result;
 
-public interface SolrResponse<T> {
+import org.springframework.data.domain.Pageable;
 
+public interface SolrResponse<T> extends Pageable{
+	int getNumFounds();
 }
