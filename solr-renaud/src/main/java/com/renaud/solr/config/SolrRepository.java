@@ -7,5 +7,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.Repository;
 
 public interface SolrRepository<T,ID extends Serializable> extends Repository<T, ID>, CrudRepository<T, ID>, PagingAndSortingRepository<T, ID>{
-
+//	void setCoreName();
 }

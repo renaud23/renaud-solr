@@ -11,20 +11,22 @@ import org.apache.solr.common.SolrInputDocument;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.util.Assert;
+import com.renaud.solr.config.SolrRepository;
 import com.renaud.solr.query.Query;
 import com.renaud.solr.query.result.SolrResponse;
 import com.renaud.solr.repository.bean.SolrBeanService;
 import com.renaud.solr.repository.bean.field.FieldValue;
 import com.renaud.solr.repository.server.SolrClientFactory;
 
-public class SolrCrudRepository <T, ID extends Serializable> implements CrudRepository<T, ID>, PagingAndSortingRepository<T, ID> {
+public class SolrCrudRepository <T, ID extends Serializable> implements SolrRepository<T, ID> {
 	
 	private Class<T> domainClass;
 
 	private SolrBeanService<T,ID> solrBeanService;
+	
+	private SolrClientFactory solrClientFactory;
+	
 
 	public SolrCrudRepository(SolrBeanService<T, ID> solrBeanService) {
 		this.solrBeanService = solrBeanService;
@@ -40,11 +42,11 @@ public class SolrCrudRepository <T, ID extends Serializable> implements CrudRepo
 			.filter((field)-> {return field.getValue() != null && !StringUtils.isBlank(field.getName());})
 			.forEach((field)->{ document.addField(field.getName(), field.getValue()); });
 		try {
-			getClientFactory().getClient().add(document);
+			this.solrClientFactory.getClient().add(document);
 			
 			return entity;
 		} catch (SolrServerException | IOException e) {
-			throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
+			throw new SolrRepositoryException("Impossible de sauver une entité.");
 		}
 	}
 
@@ -60,7 +62,7 @@ public class SolrCrudRepository <T, ID extends Serializable> implements CrudRepo
 	@Override
 	public T findOne(ID id) {
 		try {
-			SolrDocument  document = getClientFactory().getClient().getById(id.toString());
+			SolrDocument  document = this.solrClientFactory.getClient().getById(id.toString());
 			if(document != null){
 				List<FieldValue> fields = 
 						document.getFieldNames().stream().map((name)->{ 
@@ -146,8 +148,9 @@ public class SolrCrudRepository <T, ID extends Serializable> implements CrudRepo
 	public void setDomainClass(Class<T> domainClass) {
 		this.domainClass = domainClass;
 	}
-	
-	public SolrClientFactory getClientFactory(){
-		return null;
+
+	public void setSolrClientFactory(SolrClientFactory solrClientFactory) {
+		this.solrClientFactory = solrClientFactory;
 	}
+	
 }

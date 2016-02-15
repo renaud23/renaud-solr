@@ -14,12 +14,14 @@ import org.springframework.data.repository.config.DefaultRepositoryBaseClass;
 import org.springframework.data.repository.query.QueryLookupStrategy;
 import org.springframework.data.repository.query.QueryLookupStrategy.Key;
 
+import com.renaud.solr.repository.server.SolrClientFactory;
+
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
 @Import(SolrConf.class)
-public @interface SolrEnable {
+public @interface SolrRepositoryEnable {
 	/**
 	 * Alias for the {@link #basePackages()} attribute. Allows for more concise annotation declarations e.g.:
 	 * {@code @EnableSolrRepositories("org.my.pkg")} instead of {@code @EnableSolrRpositories(basePackages="org.my.pkg")}.
@@ -90,5 +92,9 @@ public @interface SolrEnable {
 	 * @since 1.5
 	 */
 	Class<?> repositoryBaseClass() default DefaultRepositoryBaseClass.class;
+	
+	// spécifique
+	
+	Class<? extends SolrClientFactory> clientFactoryClass();
 
 }

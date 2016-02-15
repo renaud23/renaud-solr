@@ -14,8 +14,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
-
-import com.renaud.solr.config.SolrEnable;
 import com.renaud.solr.repository.server.SolrClientFactory;
 
 
@@ -28,6 +26,8 @@ public abstract class BaseTest {
 	private final static Logger logger = LoggerFactory.getLogger(BaseTest.class);
 	
 	public abstract SolrClientFactory getFactory();
+	
+	public abstract void before();
 	
 	@After
 	public void after(){
@@ -44,7 +44,7 @@ public abstract class BaseTest {
 	}
 	
 	@Before
-	public void before(){
-		
+	public void beforeRoot(){
+		this.before();
 	}
 }

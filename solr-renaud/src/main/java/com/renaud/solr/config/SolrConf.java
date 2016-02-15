@@ -9,7 +9,7 @@ public class SolrConf extends RepositoryBeanDefinitionRegistrarSupport {
 
 	@Override
 	protected Class<? extends Annotation> getAnnotation() {
-		return SolrEnable.class;
+		return SolrRepositoryEnable.class;
 	}
 
 	@Override

@@ -9,4 +9,6 @@ public interface SolrClientFactory {
 	SolrClient getClient() throws SolrRepositoryException;
 	
 	void close() throws SolrRepositoryException;
+	
+	void setCoreName(String coreName);
 }

@@ -7,7 +7,6 @@ import org.springframework.data.repository.core.support.RepositoryFactorySupport
 import org.springframework.data.repository.core.support.TransactionalRepositoryFactoryBeanSupport;
 import com.renaud.solr.annotation.tools.CachAnnotation;
 import com.renaud.solr.repository.bean.SolrBeanService;
-import com.renaud.solr.repository.bean.field.StateFieldFactory;
 import com.renaud.solr.repository.server.SolrClientFactory;
 
 
@@ -16,18 +15,24 @@ public class SolrRepositoryFactoryBean<T extends Repository<S, ID>, S, ID extend
 			TransactionalRepositoryFactoryBeanSupport<T, S, ID> {
 	
 	@Autowired
-	private SolrClientFactory solrClientFactory;
-	@Autowired
 	private CachAnnotation cachAnnotation;
-	@Autowired
-	private StateFieldFactory<?> stateFieldFactory;
 	@Autowired
 	private SolrBeanService<?,?> solrBeanService;
 	
+	private Class<? extends SolrClientFactory> clientFactoryClass;
 	
 	@Override
 	protected RepositoryFactorySupport doCreateRepositoryFactory() {
-		return new SolrRepositoryFactory(solrClientFactory, cachAnnotation, stateFieldFactory, solrBeanService);
+		SolrRepositoryFactory repositoryFactory = new SolrRepositoryFactory(cachAnnotation, solrBeanService);
+		repositoryFactory.setClientFactoryClass(clientFactoryClass);
+		return repositoryFactory;
 	}
 
+	
+	
+	public void setClientFactoryClass(Class<? extends SolrClientFactory> clientFactoryClass) {
+		this.clientFactoryClass = clientFactoryClass;
+	}
+	
+	
 }

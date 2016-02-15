@@ -15,13 +15,15 @@ public class SolrClientFactoryTest implements SolrClientFactory{
 
 	private SolrClient solrClient;
 	
+	private String coreName = "core-test";
+	
 	@Override
 	public SolrClient getClient()  throws SolrRepositoryException{
 		if(solrClient == null){
 			String currentDir = System.getProperty("user.dir");
 		    CoreContainer container = new CoreContainer(currentDir + "/src/test/resources/solr-home");
 		    container.load();
-		    solrClient = new EmbeddedSolrServer(container, "core-test");
+		    solrClient = new EmbeddedSolrServer(container, coreName);
 		}
 		
 		return solrClient;
@@ -37,6 +39,11 @@ public class SolrClientFactoryTest implements SolrClientFactory{
 				throw new SolrRepositoryException("Impossible de fremer le serveur.", e);
 			}
 		}
+	}
+
+	@Override
+	public void setCoreName(String coreName) {
+		this.coreName = coreName;
 	}
 
 }
