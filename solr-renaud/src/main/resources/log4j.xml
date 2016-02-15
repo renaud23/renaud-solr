@@ -30,8 +30,13 @@
 		<appender-ref ref="console" />
 	</logger>
 
+	<logger name="org.springframework.data" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="console" />
+	</logger>
+	
 	<logger name="org.springframework" additivity="false">
-		<level value="ERROR" />
+		<level value="DEBUG" />
 		<appender-ref ref="console" />
 	</logger>
 	
