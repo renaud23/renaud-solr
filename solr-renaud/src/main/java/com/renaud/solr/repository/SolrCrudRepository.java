@@ -14,10 +14,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.util.Assert;
 import com.renaud.solr.config.SolrRepository;
 import com.renaud.solr.query.Query;
+import com.renaud.solr.query.SimpleQuery;
 import com.renaud.solr.query.result.SolrResponse;
 import com.renaud.solr.repository.bean.SolrBeanService;
 import com.renaud.solr.repository.bean.field.FieldValue;
 import com.renaud.solr.repository.server.SolrClientFactory;
+import com.renaud.splr.query.pageable.DocumentIterable;
+import com.renaud.splr.query.pageable.DocumentIterator;
 
 public class SolrCrudRepository <T, ID extends Serializable> implements SolrRepository<T, ID> {
 	
@@ -79,14 +82,24 @@ public class SolrCrudRepository <T, ID extends Serializable> implements SolrRepo
 			throw new SolrRepositoryException("Impossible de lire dans l'index.", e);
 		}
 	}
-
+	
 	@Override
-	public boolean exists(ID id) {
-		throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
+	public Iterable<T> findAll() {
+		return this.query(
+				Query.newQuery()
+					.addToken("*:*")
+					.setStart(0)
+					.setRows(10)
+					.build());
+	}
+	
+	@Override
+	public DocumentIterable<T> query(SimpleQuery query) throws SolrRepositoryException {
+		return new DocumentIterable<>(query, this);
 	}
 
 	@Override
-	public Iterable<T> findAll() {
+	public boolean exists(ID id) {
 		throw new SolrRepositoryException(SolrRepositoryException.OPERATION_EN_CHANTIER);
 	}
 

@@ -15,6 +15,10 @@ public class SimpleQuery implements Query{
 	
 	private List<String> tokens = Lists.newArrayList();
 	
+	private int start;
+	
+	private int rows;
+
 	public SolrQuery getQuery(){
 		return query;
 	}
@@ -41,6 +45,14 @@ public class SimpleQuery implements Query{
 			f.addFilter(filter);
 			return this;
 		}
+		public Builder setStart(int start) {
+			f.start = start;
+			return this;
+		}
+		public Builder setRows(int rows) {
+			f.rows = rows;
+			return this;
+		}
 		public static Builder newInstance(){
 			Builder b = new Builder();
 			b.f = new SimpleQuery();
@@ -50,5 +62,21 @@ public class SimpleQuery implements Query{
 		public SimpleQuery build(){
 			return f;
 		}
+	}
+
+	public int getStart() {
+		return start;
+	}
+
+	public void setStart(int start) {
+		this.start = start;
+	}
+
+	public int getRows() {
+		return rows;
+	}
+
+	public void setRows(int rows) {
+		this.rows = rows;
 	}
 }
