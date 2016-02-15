@@ -4,8 +4,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Stream;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
@@ -17,7 +18,7 @@ import com.renaud.solr.repository.bean.field.FieldValue;
 import com.renaud.solr.repository.bean.field.SolrFieldAccess;
 import com.renaud.solr.repository.bean.field.StateFieldFactory;
 
-@Service
+@Component
 public class SolrBeanServiceImpl<U,ID extends Serializable> implements SolrBeanService<U, ID>, SolrFieldAccess<U>{
 	
 	@Autowired

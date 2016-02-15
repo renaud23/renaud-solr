@@ -28,16 +28,16 @@ public class SolrCrudRepositoryTest extends BaseTest{
 		
 	}
 	
-//	@Test
-//	public void save(){
-//		Client  c = new Client();
-//		c.setId("1");
-//		c.setNom("Genevois");
-//		c.setPrenom("Renaud");
-//		c.setAdresse(new Adresse("Aristide Briand", 3, "92170", "Vanves"));
-//		
-//		clientRepository.save(c);
-//	}
+	@Test
+	public void save(){
+		Client  c = new Client();
+		c.setId("1");
+		c.setNom("Genevois");
+		c.setPrenom("Renaud");
+		c.setAdresse(new Adresse("Aristide Briand", 3, "92170", "Vanves"));
+		
+		clientRepository.save(c);
+	}
 //	
 //	
 //	@Test

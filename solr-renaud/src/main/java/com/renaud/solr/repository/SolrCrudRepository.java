@@ -8,30 +8,27 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrInputDocument;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.util.Assert;
-
 import com.renaud.solr.query.Query;
 import com.renaud.solr.query.result.SolrResponse;
 import com.renaud.solr.repository.bean.SolrBeanService;
 import com.renaud.solr.repository.bean.field.FieldValue;
 import com.renaud.solr.repository.server.SolrClientFactory;
 
-public abstract class SolrCrudRepository <T, ID extends Serializable> implements CrudRepository<T, ID>, PagingAndSortingRepository<T, ID> {
+public class SolrCrudRepository <T, ID extends Serializable> implements CrudRepository<T, ID>, PagingAndSortingRepository<T, ID> {
 	
+	private Class<T> domainClass;
 
-
-	public abstract SolrClientFactory getClientFactory();
-	
-	public abstract Class<T> getBeanClassType();
-	
-	@Autowired
 	private SolrBeanService<T,ID> solrBeanService;
+
+	public SolrCrudRepository(SolrBeanService<T, ID> solrBeanService) {
+		this.solrBeanService = solrBeanService;
+	}
 
 	@Override
 	public <S extends T> S save(S entity) {
@@ -72,7 +69,7 @@ public abstract class SolrCrudRepository <T, ID extends Serializable> implements
 											.setValue(document.get(name)).build(); })
 							.collect(Collectors.toList());
 				
-				return solrBeanService.fill(fields, getBeanClassType());	
+				return solrBeanService.fill(fields, domainClass);	
 			} else {
 				return null;
 			}
@@ -138,6 +135,19 @@ public abstract class SolrCrudRepository <T, ID extends Serializable> implements
 	@Override
 	public Page<T> findAll(Pageable pageable) {
 		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/* ******************************************** */
+	public Class<T> getDomainClass() {
+		return domainClass;
+	}
+
+	public void setDomainClass(Class<T> domainClass) {
+		this.domainClass = domainClass;
+	}
+	
+	public SolrClientFactory getClientFactory(){
 		return null;
 	}
 }

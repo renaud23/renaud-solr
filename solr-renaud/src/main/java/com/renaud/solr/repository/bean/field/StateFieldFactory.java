@@ -1,7 +1,6 @@
 package com.renaud.solr.repository.bean.field;
 
 import java.lang.reflect.Field;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,7 +10,7 @@ import com.renaud.solr.repository.SolrRepositoryException;
 
 @Component
 public class StateFieldFactory<U> implements SolrFieldAccess<U>{
-	
+
 	@Autowired
 	private SolrFieldAccess<U> stateSimple;
 	@Autowired
@@ -23,12 +22,10 @@ public class StateFieldFactory<U> implements SolrFieldAccess<U>{
 	}
 	
 	
-
 	@Override
 	public void fill(U bean, SolrField a, Field f, Object value) {
 		getStrategy(bean, a, f).fill(bean, a, f, value);
 	}
-	
 	
 	private SolrFieldAccess<U> getStrategy(U bean, SolrField a, Field f){
 		SolrFieldAccess<U> strategy = null;
