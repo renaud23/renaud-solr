@@ -165,5 +165,10 @@ public class SolrCrudRepository <T, ID extends Serializable> implements SolrRepo
 	public void setSolrClientFactory(SolrClientFactory solrClientFactory) {
 		this.solrClientFactory = solrClientFactory;
 	}
+
+	@Override
+	public SolrClientFactory getSolrClientFactory() {
+		return this.solrClientFactory;
+	}
 	
 }

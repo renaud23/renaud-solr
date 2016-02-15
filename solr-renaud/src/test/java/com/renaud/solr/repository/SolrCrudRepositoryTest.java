@@ -89,14 +89,6 @@ public class SolrCrudRepositoryTest extends BaseTest{
 
 	@Override
 	public SolrClientFactory getFactory() {
-		return null; //clientRepository.getClientFactory();	
+		return clientRepository.getSolrClientFactory();
 	}
-
-	@Override
-	public void before() {
-//		this.clientRepository
-		
-	}
-	
-
 }

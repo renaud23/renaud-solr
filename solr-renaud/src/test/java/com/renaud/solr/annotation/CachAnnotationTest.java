@@ -32,7 +32,4 @@ public class CachAnnotationTest extends BaseTest{
 	public SolrClientFactory getFactory() {
 		return null;
 	}
-
-	@Override
-	public void before() {}
 }

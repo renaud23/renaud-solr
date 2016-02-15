@@ -27,8 +27,6 @@ public abstract class BaseTest {
 	
 	public abstract SolrClientFactory getFactory();
 	
-	public abstract void before();
-	
 	@After
 	public void after(){
 		SolrClientFactory factory = getFactory();
@@ -45,6 +43,6 @@ public abstract class BaseTest {
 	
 	@Before
 	public void beforeRoot(){
-		this.before();
+		
 	}
 }
