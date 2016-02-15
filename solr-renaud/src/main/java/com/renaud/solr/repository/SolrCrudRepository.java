@@ -5,13 +5,18 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.Assert;
+
+import com.google.common.collect.Lists;
 import com.renaud.solr.config.SolrRepository;
 import com.renaud.solr.query.Query;
 import com.renaud.solr.query.SimpleQuery;
@@ -85,17 +90,43 @@ public class SolrCrudRepository <T, ID extends Serializable> implements SolrRepo
 	
 	@Override
 	public Iterable<T> findAll() {
-		return this.query(
-				Query.newQuery()
-					.addToken("*:*")
-					.setStart(0)
-					.setRows(10)
-					.build());
+		return new DocumentIterable<>(Query.newQuery()
+				.addToken("*:*")
+				.setStart(0)
+				.setRows(10)
+				.build(), this); 
 	}
 	
 	@Override
-	public DocumentIterable<T> query(SimpleQuery query) throws SolrRepositoryException {
-		return new DocumentIterable<>(query, this);
+	public SolrResponse<T> query(SimpleQuery query) throws SolrRepositoryException {
+		SolrQuery sq = new SolrQuery();
+		
+		StringBuilder bld = new StringBuilder();
+		query.getTokens().stream().forEach( (a)->{bld.append(a);});
+		sq.setQuery(bld.toString());
+		
+		query.getFilters().forEach((f)->{ sq.addFilterQuery(f.getFilter()); });
+		
+		
+		try {
+			QueryResponse  sr = this.solrClientFactory.getClient().query(sq);
+			List<T> documents = Lists.newArrayList();
+			for(SolrDocument document : sr.getResults()){
+				List<FieldValue> fields = 
+						document.getFieldNames().stream().map((name)->{ 
+								return  FieldValue.Builder.newInstance()
+											.setName(name)
+											.setValue(document.get(name)).build(); })
+							.collect(Collectors.toList());
+				
+				 documents.add(solrBeanService.fill(fields, domainClass));
+			}
+			
+			
+			return null;
+		} catch (SolrServerException | IOException e) {
+			throw new SolrRepositoryException("Impossible de passer une requête.", e);
+		}
 	}
 
 	@Override

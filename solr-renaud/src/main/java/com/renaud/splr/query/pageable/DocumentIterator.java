@@ -15,11 +15,17 @@ public class DocumentIterator<T> implements Iterator<T>{
 	
 	private List<T> documents;
 	
+	private int start;
 	
+	private int rows;
+	
+	private int numfounds;
 
 	public DocumentIterator(SimpleQuery query, SolrCrudRepository<T, ?> repository) {
 		this.query = query;
 		this.repository = repository;
+		
+		
 	}
 
 	@Override

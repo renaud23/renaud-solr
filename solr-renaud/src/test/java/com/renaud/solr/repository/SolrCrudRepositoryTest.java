@@ -18,11 +18,6 @@ public class SolrCrudRepositoryTest extends BaseTest{
 	
 	@Autowired
 	private ClientRepository clientRepository;
-
-	@Test
-	public void test(){
-		
-	}
 	
 	@Test
 	public void save(){
@@ -68,11 +63,27 @@ public class SolrCrudRepositoryTest extends BaseTest{
 		for(int i=0;i<10;i++){
 			clients.add(LoremClientBuilder.getClient());
 		}
-		System.out.println(clients);
 		// W
 		clientRepository.save(clients);
 		// T
 		clients.stream().forEach(this::findAndCompare);
+	}
+	
+	@Test
+	public void findAll(){
+		// G
+		List<Client> clients = Lists.newArrayList();
+		for(int i=0;i<20;i++){
+			clients.add(LoremClientBuilder.getClient());
+		}
+		clientRepository.save(clients);
+		// W
+		Iterable<Client> it = clientRepository.findAll();
+		// T
+		for(Client c : it){
+			clients.contains(c);
+		}
+		
 	}
 	
 	private void findAndCompare(Client client){

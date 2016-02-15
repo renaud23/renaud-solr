@@ -8,9 +8,7 @@ import com.google.common.collect.Lists;
 import com.renaud.solr.query.filter.Filter;
 
 public class SimpleQuery implements Query{
-	
-	private SolrQuery query;
-	
+
 	private List<Filter> filters = Lists.newArrayList();
 	
 	private List<String> tokens = Lists.newArrayList();
@@ -18,10 +16,6 @@ public class SimpleQuery implements Query{
 	private int start;
 	
 	private int rows;
-
-	public SolrQuery getQuery(){
-		return query;
-	}
 
 	@Override
 	public void addToken(String token) {
@@ -78,5 +72,21 @@ public class SimpleQuery implements Query{
 
 	public void setRows(int rows) {
 		this.rows = rows;
+	}
+
+	public List<Filter> getFilters() {
+		return filters;
+	}
+
+	public void setFilters(List<Filter> filters) {
+		this.filters = filters;
+	}
+
+	public List<String> getTokens() {
+		return tokens;
+	}
+
+	public void setTokens(List<String> tokens) {
+		this.tokens = tokens;
 	}
 }
