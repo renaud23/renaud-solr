@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.common.collect.Lists;
 import com.renaud.solr.repository.server.SolrClientFactory;
 import com.renaud.solr.test.base.BaseTest;
-import com.renaud.solr.test.base.ClientRepository;
 import com.renaud.solr.test.model.Adresse;
 import com.renaud.solr.test.model.Client;
 import com.renaud.solr.test.model.LoremClientBuilder;
+import com.renaud.solr.test.repository.ClientRepository;
 
 
 

@@ -1,4 +1,4 @@
-package com.renaud.solr.test.base;
+package com.renaud.solr.test.repository;
 
 import com.renaud.solr.config.SolrRepository;
 import com.renaud.solr.test.model.Client;

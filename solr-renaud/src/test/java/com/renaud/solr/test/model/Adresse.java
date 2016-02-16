@@ -1,13 +1,18 @@
 package com.renaud.solr.test.model;
 
 import com.renaud.solr.annotation.SolrEntity;
+import com.renaud.solr.annotation.SolrField;
 
 @SolrEntity
 public class Adresse {
 
+	@SolrField(field = "adresse_rue")
 	private String rue;	
+	@SolrField(field = "adresse_numero")
 	private Integer numero;	
+	@SolrField(field = "adresse_code_postal")
 	private String codePostal;
+	@SolrField(field = "adresse_ville")
 	private String ville;
 	
 	public Adresse(){}
