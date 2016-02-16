@@ -1,5 +1,6 @@
 package com.renaud.splr.query.pageable;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -42,6 +43,7 @@ public class DocumentIterator<T> implements Iterator<T>{
 			if(!this.it.hasNext()){
 				getNextPage();
 			}
+			hasNext =  this.it.hasNext();
 		} 
 		return hasNext;
 	}
