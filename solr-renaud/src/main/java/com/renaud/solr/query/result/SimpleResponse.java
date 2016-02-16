@@ -1,9 +1,25 @@
 package com.renaud.solr.query.result;
 
+import java.util.List;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 public class SimpleResponse<T> implements SolrResponse<T>{
+	
+	private List<T> documents;
+	
+	private long numFounds;
+	
+	private long start;
+
+	public List<T> getDocuments() {
+		return documents;
+	}
+
+	public void setDocuments(List<T> documents) {
+		this.documents = documents;
+	}
 
 	@Override
 	public int getPageNumber() {
@@ -54,9 +70,20 @@ public class SimpleResponse<T> implements SolrResponse<T>{
 	}
 
 	@Override
-	public int getNumFounds() {
-		// TODO Auto-generated method stub
-		return 0;
+	public long getNumFounds() {
+		return numFounds;
+	}
+
+	public long getStart() {
+		return start;
+	}
+
+	public void setStart(long start) {
+		this.start = start;
+	}
+
+	public void setNumFounds(long numFounds) {
+		this.numFounds = numFounds;
 	}
 
 }

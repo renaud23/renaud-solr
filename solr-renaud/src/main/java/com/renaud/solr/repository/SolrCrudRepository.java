@@ -11,6 +11,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.common.util.NamedList;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,6 +21,7 @@ import com.google.common.collect.Lists;
 import com.renaud.solr.config.SolrRepository;
 import com.renaud.solr.query.Query;
 import com.renaud.solr.query.SimpleQuery;
+import com.renaud.solr.query.result.SimpleResponse;
 import com.renaud.solr.query.result.SolrResponse;
 import com.renaud.solr.repository.bean.SolrBeanService;
 import com.renaud.solr.repository.bean.field.FieldValue;
@@ -51,6 +53,7 @@ public class SolrCrudRepository <T, ID extends Serializable> implements SolrRepo
 			.forEach((field)->{ document.addField(field.getName(), field.getValue()); });
 		try {
 			this.solrClientFactory.getClient().add(document);
+			this.solrClientFactory.getClient().commit();
 			
 			return entity;
 		} catch (SolrServerException | IOException e) {
@@ -93,7 +96,7 @@ public class SolrCrudRepository <T, ID extends Serializable> implements SolrRepo
 		return new DocumentIterable<>(Query.newQuery()
 				.addToken("*:*")
 				.setStart(0)
-				.setRows(10)
+				.setRows(8)
 				.build(), this); 
 	}
 	
@@ -104,14 +107,14 @@ public class SolrCrudRepository <T, ID extends Serializable> implements SolrRepo
 		StringBuilder bld = new StringBuilder();
 		query.getTokens().stream().forEach( (a)->{bld.append(a);});
 		sq.setQuery(bld.toString());
-		
+		sq.setRows(query.getRows());
+		sq.setStart(query.getStart());
 		query.getFilters().forEach((f)->{ sq.addFilterQuery(f.getFilter()); });
-		
-		
 		try {
 			QueryResponse  sr = this.solrClientFactory.getClient().query(sq);
 			List<T> documents = Lists.newArrayList();
-			for(SolrDocument document : sr.getResults()){
+			SolrDocumentList dl =  sr.getResults();
+			for(SolrDocument document : dl){
 				List<FieldValue> fields = 
 						document.getFieldNames().stream().map((name)->{ 
 								return  FieldValue.Builder.newInstance()
@@ -121,9 +124,12 @@ public class SolrCrudRepository <T, ID extends Serializable> implements SolrRepo
 				
 				 documents.add(solrBeanService.fill(fields, domainClass));
 			}
+			SimpleResponse<T> response = new SimpleResponse<>();
+			response.setDocuments(documents);
+			response.setNumFounds(dl.getNumFound());
+			response.setStart(dl.getStart());
 			
-			
-			return null;
+			return response;
 		} catch (SolrServerException | IOException e) {
 			throw new SolrRepositoryException("Impossible de passer une requête.", e);
 		}

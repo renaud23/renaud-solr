@@ -80,9 +80,12 @@ public class SolrCrudRepositoryTest extends BaseTest{
 		// W
 		Iterable<Client> it = clientRepository.findAll();
 		// T
+		int i = 0;
 		for(Client c : it){
+			i++;
 			clients.contains(c);
 		}
+		Assert.assertEquals(clients.size(), i);
 		
 	}
 	
