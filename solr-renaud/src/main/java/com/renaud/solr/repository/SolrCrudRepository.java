@@ -67,10 +67,25 @@ public class SolrCrudRepository <T, ID extends Serializable> implements SolrRepo
 	@Override
 	public <S extends T> Iterable<S> save(Iterable<S> entities) {
 		Assert.notNull(entities, "Impossible de sauvegarder une collection null.");
-		for(S e : entities){
-			this.save(e);
+		logger.debug("Save entities");
+		List<SolrInputDocument> documents = Lists.newArrayList();
+		for(S entity : entities){
+			SolrInputDocument document = new SolrInputDocument();			
+			solrBeanService
+				.read(entity)
+				.stream()
+				.filter((field)-> {return field.getValue() != null && !StringUtils.isBlank(field.getName());})
+				.forEach((field)->{ document.addField(field.getName(), field.getValue()); });
+			documents.add(document);
 		}
-		return entities;
+		try {
+			this.solrClientFactory.getClient().add(documents);
+			this.solrClientFactory.getClient().commit();
+			
+			return entities;
+		} catch (SolrRepositoryException | SolrServerException | IOException e) {
+			throw new SolrRepositoryException("Impossible de sauver une liste d'entité.");
+		}
 	}
 
 	@Override
