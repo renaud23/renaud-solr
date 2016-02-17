@@ -1,10 +1,7 @@
 package com.renaud.splr.query.pageable;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
-
 import com.renaud.solr.query.SimpleQuery;
 import com.renaud.solr.query.result.SolrResponse;
 import com.renaud.solr.repository.SolrCrudRepository;
@@ -15,8 +12,6 @@ public class DocumentIterator<T> implements Iterator<T>{
 	private SimpleQuery query;
 	
 	private SolrCrudRepository<T, ?> repository;
-	
-	private List<T> documents;
 	
 	private int start;
 	

@@ -15,13 +15,13 @@ public class LoremClientBuilder {
 	public static Client getClient(){
 		return Client.Builder.newInstance()
 				.setId(String.valueOf(ID++))
-				.setNom(new LoremIpsum().getParagraphs())
-				.setPrenom(newLorem().getParagraphs())
+				.setNom(new LoremIpsum().getWords(10, 2))
+				.setPrenom(newLorem().getWords(10, 3))
 				.setAdresse(Adresse.Builder.newInstance()
-						.setRue(newLorem().getParagraphs())
+						.setRue(newLorem().getWords(3))
 						.setNumero(RND.nextInt(120) + 1)
 						.setCodePostal(String.valueOf(RND.nextInt(80000) + 10000))
-						.setVille(newLorem().getParagraphs())
+						.setVille(newLorem().getWords(10, 3))
 						.build())
 				.build();
 	}

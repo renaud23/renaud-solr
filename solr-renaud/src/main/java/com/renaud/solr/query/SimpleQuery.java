@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.solr.client.solrj.SolrQuery;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.renaud.solr.query.filter.Filter;
 
@@ -16,6 +17,16 @@ public class SimpleQuery implements Query{
 	private int start;
 	
 	private int rows;
+	
+	public String toString(){
+		return Objects
+				.toStringHelper(SimpleQuery.class)
+				.add("filters", filters)
+				.add("tokens", tokens)
+				.add("start", start)
+				.add("rows", rows)
+				.toString();
+	}
 
 	@Override
 	public void addToken(String token) {

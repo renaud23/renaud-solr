@@ -1,8 +1,10 @@
 package com.renaud.solr.test.model;
 
+import com.google.common.base.Objects;
 import com.renaud.solr.annotation.SolrEntity;
 import com.renaud.solr.annotation.SolrField;
 import com.renaud.solr.annotation.SolrId;
+import com.renaud.solr.query.filter.FilterLeaf;
 
 @SolrEntity
 public class Client {
@@ -20,6 +22,16 @@ public class Client {
 	@SolrField(field="adresse_ville", property="adresse.ville")
 	private Adresse adresse;
 	
+	
+	public String toString(){
+		return Objects
+				.toStringHelper(Client.class)
+				.add("id", id)
+				.add("prenom", prenom)
+				.add("nom", nom)
+				.add("adresse", adresse)
+				.toString();
+	}
 	
 	public String getNom() {
 		return nom;

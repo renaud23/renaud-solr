@@ -41,12 +41,12 @@
 	</logger>
 	
 	<logger name="org.apache.solr" additivity="false">
-		<level value="INFO" />
+		<level value="ERROR" />
 		<appender-ref ref="console" />
 	</logger>
 	
 	<logger name="org.apache.commons" additivity="false">
-		<level value="DEBUG" />
+		<level value="ERROR" />
 		<appender-ref ref="console" />
 	</logger>
 

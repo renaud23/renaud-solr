@@ -11,7 +11,8 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
-import org.apache.solr.common.util.NamedList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -27,9 +28,10 @@ import com.renaud.solr.repository.bean.SolrBeanService;
 import com.renaud.solr.repository.bean.field.FieldValue;
 import com.renaud.solr.repository.server.SolrClientFactory;
 import com.renaud.splr.query.pageable.DocumentIterable;
-import com.renaud.splr.query.pageable.DocumentIterator;
 
 public class SolrCrudRepository <T, ID extends Serializable> implements SolrRepository<T, ID> {
+	
+	private final static Logger logger = LoggerFactory.getLogger(SolrCrudRepository.class);
 	
 	private Class<T> domainClass;
 
@@ -45,6 +47,7 @@ public class SolrCrudRepository <T, ID extends Serializable> implements SolrRepo
 	@Override
 	public <S extends T> S save(S entity) {
 		Assert.notNull(entity, "Impossible de sauvegarder un bean null.");
+		logger.debug("Save entity " + entity.toString());
 		SolrInputDocument document = new SolrInputDocument();
 		solrBeanService
 			.read(entity)
@@ -96,12 +99,13 @@ public class SolrCrudRepository <T, ID extends Serializable> implements SolrRepo
 		return new DocumentIterable<>(Query.newQuery()
 				.addToken("*:*")
 				.setStart(0)
-				.setRows(8)
+				.setRows(10)
 				.build(), this); 
 	}
 	
 	@Override
 	public SolrResponse<T> query(SimpleQuery query) throws SolrRepositoryException {
+		logger.debug("Solr query " + query.toString());
 		SolrQuery sq = new SolrQuery();
 		
 		StringBuilder bld = new StringBuilder();

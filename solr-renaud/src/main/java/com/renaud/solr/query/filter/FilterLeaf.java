@@ -2,12 +2,24 @@ package com.renaud.solr.query.filter;
 
 import org.springframework.util.Assert;
 
+import com.google.common.base.Objects;
+import com.renaud.solr.query.SimpleQuery;
+
 public class FilterLeaf implements Filter{
 
 	private String field;
 	private String value;
 	private boolean quoted = false;
 	private boolean negate = false;
+	
+	public String toString(){
+		return Objects
+				.toStringHelper(FilterLeaf.class)
+				.add("field", field)
+				.add("value", value)
+				.add("negate", negate)
+				.toString();
+	}
 
 	@Override
 	public String getFilter() {

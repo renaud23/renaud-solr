@@ -14,7 +14,7 @@ import com.renaud.solr.test.repository.ClientRepository;
 
 
 
-public class SolrCrudRepositoryTest extends BaseTest{
+public class SolrCrudRepositoryClientTest extends BaseTest{
 	
 	@Autowired
 	private ClientRepository clientRepository;

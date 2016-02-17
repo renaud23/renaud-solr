@@ -1,11 +1,14 @@
 package com.renaud.solr.test.model;
 
+import com.google.common.base.Objects;
 import com.renaud.solr.annotation.SolrEntity;
 import com.renaud.solr.annotation.SolrField;
 
 @SolrEntity
 public class Adresse {
-
+	
+	@SolrField(field = "id")
+	private String id;
 	@SolrField(field = "adresse_rue")
 	private String rue;	
 	@SolrField(field = "adresse_numero")
@@ -23,6 +26,18 @@ public class Adresse {
 		this.codePostal = codePostal;
 		this.ville = ville;
 	}
+	
+	public String toString(){
+		return Objects
+				.toStringHelper(Adresse.class)
+				.add("id", id)
+				.add("numero", numero)
+				.add("rue", rue)
+				.add("codePostal", codePostal)
+				.add("ville", ville)
+				.toString();
+	}
+	
 	public String getRue() {
 		return rue;
 	}
@@ -47,7 +62,14 @@ public class Adresse {
 	public void setVille(String ville) {
 		this.ville = ville;
 	}
-	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public static class Builder{
 		private Adresse a;
 		
@@ -58,6 +80,12 @@ public class Adresse {
 		}
 		
 		public Adresse build(){
+			a.id =  Objects.toStringHelper("Adresse:")
+				       .add("numero", a.numero)
+				       .add("rue", a.rue)
+				       .add("codePostal", a.codePostal)
+				       .add("ville", a.ville)
+				       .toString();
 			return a;
 		}
 		
