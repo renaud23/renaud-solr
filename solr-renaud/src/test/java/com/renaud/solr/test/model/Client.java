@@ -1,15 +1,18 @@
 package com.renaud.solr.test.model;
 
+import java.util.List;
+
+import org.springframework.data.annotation.Id;
+
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import com.renaud.solr.annotation.SolrEntity;
 import com.renaud.solr.annotation.SolrField;
-import com.renaud.solr.annotation.SolrId;
-import com.renaud.solr.query.filter.FilterLeaf;
 
 @SolrEntity
 public class Client {
 	
-	@SolrId
+	@Id
 	@SolrField(field = "id")
 	private String id;
 	@SolrField(field = "nom")
@@ -21,7 +24,8 @@ public class Client {
 	@SolrField(field="adresse_code_postal", property="adresse.codePostal")
 	@SolrField(field="adresse_ville", property="adresse.ville")
 	private Adresse adresse;
-	
+	@SolrField(field="tags")
+	private List<String> tags = Lists.newArrayList();
 	
 	public String toString(){
 		return Objects
@@ -57,9 +61,13 @@ public class Client {
 	public void setAdresse(Adresse adresse) {
 		this.adresse = adresse;
 	}
-	
-	
-	
+	public List<String> getTags() {
+		return tags;
+	}
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
+
 	public static class Builder{
 		private Client c;
 		
@@ -90,6 +98,11 @@ public class Client {
 		
 		public Builder setId(String id) {
 			c.id = id;
+			return this;
+		}
+		
+		public Builder addTag(String tag) {
+			c.tags.add(tag);
 			return this;
 		}
 	}
