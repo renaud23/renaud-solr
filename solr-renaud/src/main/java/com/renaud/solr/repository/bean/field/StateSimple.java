@@ -13,7 +13,7 @@ import com.renaud.solr.repository.SolrRepositoryException;
 public class StateSimple<U> implements SolrFieldAccess<U>{
 
 	@Override
-	public FieldValue read(U bean, SolrField a, Field f) {
+	public FieldValue readBeanValues(U bean, SolrField a, Field f) {
 		try {
 			return FieldValue.Builder
 					.newInstance()
@@ -26,7 +26,7 @@ public class StateSimple<U> implements SolrFieldAccess<U>{
 	}
 
 	@Override
-	public void fill(U bean, SolrField a, Field f, Object value) {
+	public void fillBean(U bean, SolrField a, Field f, Object value) {
 		try {
 			BeanUtils.setProperty(bean, a.field(), value);
 		} catch (IllegalAccessException | InvocationTargetException e) {

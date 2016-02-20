@@ -34,12 +34,12 @@ public class SolrBeanServiceImpl<U,ID extends Serializable> implements SolrBeanS
 			.forEach((field)->{
 				
 						Stream.of(field.getAnnotation(SolrFields.class).value())
-									.map((a)->{ return this.read(bean, a, field); })
+									.map((a)->{ return this.readBeanValues(bean, a, field); })
 									.forEach(values::add);
 			});
 
 		Stream.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrField.class))
-					.map((field)->{ return this.read(bean, field.getAnnotation(SolrField.class), field); })
+					.map((field)->{ return this.readBeanValues(bean, field.getAnnotation(SolrField.class), field); })
 					.forEach(values::add);
 		
 		return values;
@@ -50,13 +50,17 @@ public class SolrBeanServiceImpl<U,ID extends Serializable> implements SolrBeanS
 		try {
 			U bean = clazz.newInstance();
 			
-			Stream.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrField.class)).forEach(
-					(field)->{ this.fill(bean, field.getAnnotation(SolrField.class), field, fields); });
+			Stream.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrField.class))
+			.filter(f->f.getAnnotation(SolrField.class).read())
+			.forEach(
+					(field)->{this.fill(bean, field.getAnnotation(SolrField.class), field, fields); });
 			
 			
 			Stream.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrFields.class)).forEach(
 					(field)->{
-						Stream.of(field.getAnnotation(SolrFields.class).value()).forEach(
+						Stream.of(field.getAnnotation(SolrFields.class).value())
+						.filter(a->a.read())
+						.forEach(
 								(a)->{ this.fill(bean, a, field, fields); });
 					});
 			 
@@ -67,20 +71,20 @@ public class SolrBeanServiceImpl<U,ID extends Serializable> implements SolrBeanS
 	}
 
 	@Override
-	public FieldValue read(U bean, SolrField a, Field f){
-		return stateFieldFactory.read(bean, a, f);
+	public FieldValue readBeanValues(U bean, SolrField a, Field f){
+		return stateFieldFactory.readBeanValues(bean, a, f);
 	}
 
 	@Override
-	public void fill(U bean, SolrField a, Field f, Object value) {
-		stateFieldFactory.fill(bean, a, f, value);
+	public void fillBean(U bean, SolrField a, Field f, Object value) {
+		stateFieldFactory.fillBean(bean, a, f, value);
 		
 	}
 	
 	private void fill(U bean, SolrField a, Field field,  List<FieldValue> fields){
 		try{
 			Object value = fields.stream().filter((f)-> {return Objects.equal(f.getName(), a.field());}).findFirst().get().getValue();
-			this.fill(bean, a, field, value);
+			this.fillBean(bean, a, field, value);
 		}catch(NoSuchElementException e){}
 	}
 	

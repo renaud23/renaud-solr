@@ -12,4 +12,5 @@ import java.lang.annotation.Target;
 public @interface SolrField {
 	public String field();
 	public String property() default "";
+	public boolean read() default true;
 }

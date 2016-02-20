@@ -6,8 +6,8 @@ import com.renaud.solr.annotation.SolrField;
 
 
 public interface SolrFieldAccess<U> {
-	FieldValue read(U bean, SolrField a, Field f);
+	FieldValue readBeanValues(U bean, SolrField a, Field f);
 	
-	void fill(U bean, SolrField a, Field f, Object value);
+	void fillBean(U bean, SolrField a, Field f, Object value);
 
 }

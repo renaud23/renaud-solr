@@ -5,13 +5,20 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.annotation.Annotation;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Set;
 
 import org.apache.commons.beanutils.ConstructorUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Queues;
+import com.google.common.collect.Sets;
 
 /**
  * @author Kupal 3kb
@@ -108,5 +115,22 @@ public class ClassUtil {
 			cible = nouveau;
 		}
 		return bean;
+	}
+    
+	public static <E> Collection<E> createCollection(Class<E> classType) {
+		Collection<E> collection = null;
+		if (List.class.isAssignableFrom(classType)) {
+			collection = Lists.newArrayList();
+		}
+		else
+			if (Set.class.isAssignableFrom(classType)) {
+				collection = Sets.newHashSet();
+			}
+			else
+				if (Queue.class.isAssignableFrom(classType)) {
+					collection = Queues.newArrayDeque();
+				}
+
+		return collection;
 	}
 }

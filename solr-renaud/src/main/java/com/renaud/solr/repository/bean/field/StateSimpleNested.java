@@ -14,7 +14,7 @@ import com.renaud.solr.repository.SolrRepositoryException;
 public class StateSimpleNested<U> implements SolrFieldAccess<U>{
 
 	@Override
-	public FieldValue read(U bean, SolrField a, Field f) {
+	public FieldValue readBeanValues(U bean, SolrField a, Field f) {
 		try {
 			Object value = null;
 			try{
@@ -32,7 +32,7 @@ public class StateSimpleNested<U> implements SolrFieldAccess<U>{
 	}
 
 	@Override
-	public void fill(U bean, SolrField a, Field f, Object value) {
+	public void fillBean(U bean, SolrField a, Field f, Object value) {
 		try {
 			ClassUtil.instanciateAttributs(a.property(), bean);
 			Class<?> type = PropertyUtils.getPropertyType(bean, a.property());

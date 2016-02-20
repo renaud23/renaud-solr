@@ -21,14 +21,14 @@ public class StateFieldFactory<U> implements SolrFieldAccess<U>{
 	private SolrFieldAccess<U> stateMultivaluedNested;
 
 	@Override
-	public FieldValue read(U bean, SolrField a, Field f) {
-		return getStrategy(bean, a, f).read(bean, a, f);
+	public FieldValue readBeanValues(U bean, SolrField a, Field f) {
+		return getStrategy(bean, a, f).readBeanValues(bean, a, f);
 	}
 	
 	
 	@Override
-	public void fill(U bean, SolrField a, Field f, Object value) {
-		getStrategy(bean, a, f).fill(bean, a, f, value);
+	public void fillBean(U bean, SolrField a, Field f, Object value) {
+		getStrategy(bean, a, f).fillBean(bean, a, f, value);
 	}
 	
 	private SolrFieldAccess<U> getStrategy(U bean, SolrField a, Field f){
@@ -38,8 +38,7 @@ public class StateFieldFactory<U> implements SolrFieldAccess<U>{
 		boolean nested = !StringUtils.isBlank(a.property());
 		boolean iterable = false;
 		try {
-			Class<?> clazz = PropertyUtils.getPropertyType(bean, f.getName());
-			iterable = Iterable.class.isAssignableFrom(clazz);
+			iterable = Iterable.class.isAssignableFrom(PropertyUtils.getPropertyType(bean, f.getName()));
 		} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {}
 		if(!nested && !iterable){
 			strategy = stateSimple;
