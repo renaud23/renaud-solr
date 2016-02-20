@@ -26,6 +26,9 @@ public class Client {
 	private Adresse adresse;
 	@SolrField(field="tags")
 	private List<String> tags = Lists.newArrayList();
+	@SolrField(field="contact_id", property="contacts.id")
+	@SolrField(field="contact_adresse_ville", property="contacts.adresse.ville")
+	private List<Client> contacts = Lists.newArrayList();
 	
 	public String toString(){
 		return Objects
@@ -34,6 +37,7 @@ public class Client {
 				.add("prenom", prenom)
 				.add("nom", nom)
 				.add("adresse", adresse)
+				.add("tags", tags)
 				.toString();
 	}
 	
@@ -103,6 +107,11 @@ public class Client {
 		
 		public Builder addTag(String tag) {
 			c.tags.add(tag);
+			return this;
+		}
+		
+		public Builder addContact(Client contact) {
+			c.contacts.add(contact);
 			return this;
 		}
 	}

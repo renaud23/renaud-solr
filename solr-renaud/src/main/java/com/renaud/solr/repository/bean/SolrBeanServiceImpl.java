@@ -3,6 +3,7 @@ package com.renaud.solr.repository.bean;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,8 +78,10 @@ public class SolrBeanServiceImpl<U,ID extends Serializable> implements SolrBeanS
 	}
 	
 	private void fill(U bean, SolrField a, Field field,  List<FieldValue> fields){
-		Object value = fields.stream().filter((f)-> {return Objects.equal(f.getName(), a.field());}).findFirst().get().getValue();
-		this.fill(bean, a, field, value);
+		try{
+			Object value = fields.stream().filter((f)-> {return Objects.equal(f.getName(), a.field());}).findFirst().get().getValue();
+			this.fill(bean, a, field, value);
+		}catch(NoSuchElementException e){}
 	}
 	
 }

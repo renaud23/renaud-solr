@@ -57,6 +57,29 @@ public class SolrCrudRepositoryClientTest extends BaseTest{
 	}
 	
 	@Test
+	public void findMultivalued(){
+		// G
+		Client o = Client.Builder.newInstance()
+				.setId("renaud@genevois")
+				.addTag("tag1")
+				.addTag("tag2")
+				.addTag("tag3")
+				.build();
+		clientRepository.save(o);
+		// W
+		Client c = clientRepository.findOne("renaud@genevois");
+		// T
+		Assert.assertNotNull(c);
+		Assert.assertNotNull(c.getTags());
+		Assert.assertEquals(o.getTags(), c.getTags());
+	}
+	
+	@Test
+	public void findMultivaluedNested(){
+		
+	}
+	
+	@Test
 	public void saveAll(){
 		// G
 		List<Client> clients = Lists.newArrayList();
@@ -85,8 +108,7 @@ public class SolrCrudRepositoryClientTest extends BaseTest{
 			i++;
 			clients.contains(c);
 		}
-		Assert.assertEquals(clients.size(), i);
-		
+		Assert.assertEquals(clients.size(), i);	
 	}
 	
 	private void findAndCompare(Client client){

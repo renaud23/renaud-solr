@@ -19,6 +19,8 @@
 	<field name="adresse_ville" type="string" indexed="true" stored="true" required="false" multiValued="false" />
 	<field name="adresse_code_postal" type="string" indexed="true" stored="true" required="false" multiValued="false" />
 	<field name="tags" type="string" indexed="true" stored="true" required="false" multiValued="true" />
+	<field name="contact_id" type="string" indexed="true" stored="true" required="false" multiValued="true" />
+	<field name="contact_adresse_ville" type="string" indexed="true" stored="true" required="false" multiValued="true" />
 
    
    <dynamicField name="*_i"  type="int"    indexed="true"  stored="true"/>

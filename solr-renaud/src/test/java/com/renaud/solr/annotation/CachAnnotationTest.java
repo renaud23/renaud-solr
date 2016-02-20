@@ -22,7 +22,7 @@ public class CachAnnotationTest extends BaseTest{
 		Field[] fields = cachAnnotation.getAnnotedFields(Client.class, SolrField.class);
 		// T
 		Assert.assertNotNull(fields.length);
-		Assert.assertEquals(2, fields.length);
+		Assert.assertEquals(4, fields.length);
 	}
 
 	@Override
