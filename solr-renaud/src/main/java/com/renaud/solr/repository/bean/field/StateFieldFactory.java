@@ -38,7 +38,8 @@ public class StateFieldFactory<U> implements SolrFieldAccess<U>{
 		boolean nested = !StringUtils.isBlank(a.property());
 		boolean iterable = false;
 		try {
-			iterable = Iterable.class.isInstance(PropertyUtils.getPropertyType(bean, f.getName()));
+			Class<?> clazz = PropertyUtils.getPropertyType(bean, f.getName());
+			iterable = Iterable.class.isAssignableFrom(clazz);
 		} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {}
 		if(!nested && !iterable){
 			strategy = stateSimple;

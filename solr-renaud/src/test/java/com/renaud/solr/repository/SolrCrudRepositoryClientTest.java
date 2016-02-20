@@ -76,7 +76,25 @@ public class SolrCrudRepositoryClientTest extends BaseTest{
 	
 	@Test
 	public void findMultivaluedNested(){
-		
+		// G
+		Client contact1 = Client.Builder.newInstance()
+				.setId("francis@cabrel")
+				.setAdresse(Adresse.Builder.newInstance().setVille("toulouse").build())
+				.build();
+		Client contact2 = Client.Builder.newInstance()
+				.setId("joe@dimembro")
+				.build();
+		Client o = Client.Builder.newInstance()
+				.setId("bob@marley")
+//				.addContact(contact1)
+//				.addContact(contact2)
+				.build();
+		clientRepository.save(o);
+		// W
+		Client c = clientRepository.findOne("bob@marley");
+		// T
+		Assert.assertNotNull(c);
+		Assert.assertEquals(o, c);
 	}
 	
 	@Test

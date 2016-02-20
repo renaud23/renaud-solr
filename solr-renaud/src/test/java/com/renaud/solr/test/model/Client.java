@@ -1,11 +1,13 @@
 package com.renaud.solr.test.model;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.annotation.Id;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.renaud.solr.annotation.SolrEntity;
 import com.renaud.solr.annotation.SolrField;
 
@@ -28,7 +30,7 @@ public class Client {
 	private List<String> tags = Lists.newArrayList();
 	@SolrField(field="contact_id", property="contacts.id")
 	@SolrField(field="contact_adresse_ville", property="contacts.adresse.ville")
-	private List<Client> contacts = Lists.newArrayList();
+	private Set<Client> contacts = Sets.newHashSet();
 	
 	public String toString(){
 		return Objects
@@ -39,6 +41,21 @@ public class Client {
 				.add("adresse", adresse)
 				.add("tags", tags)
 				.toString();
+	}
+	
+	public boolean equals(Object o){
+		boolean state = false;
+		if(o instanceof Client){
+			Client c = (Client) o;
+			state = Objects.equal(this.id, c.id) && 
+					Objects.equal(this.nom, c.nom) && 
+					Objects.equal(this.prenom, c.prenom) &&
+					Objects.equal(this.adresse, c.adresse) &&
+					Objects.equal(this.tags, c.tags) &&
+					Objects.equal(this.contacts, c.contacts);
+		}
+		
+		return state;
 	}
 	
 	public String getNom() {
@@ -70,6 +87,14 @@ public class Client {
 	}
 	public void setTags(List<String> tags) {
 		this.tags = tags;
+	}
+
+	public Set<Client> getContacts() {
+		return contacts;
+	}
+
+	public void setContacts(Set<Client> contacts) {
+		this.contacts = contacts;
 	}
 
 	public static class Builder{

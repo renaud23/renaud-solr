@@ -38,6 +38,20 @@ public class Adresse {
 				.toString();
 	}
 	
+	public boolean equals(Object o){
+		boolean state = false;
+		if(o instanceof Adresse){
+			Adresse c = (Adresse) o;
+			state = Objects.equal(this.id, c.id) && 
+					Objects.equal(this.rue, c.rue) && 
+					Objects.equal(this.numero, c.numero) &&
+					Objects.equal(this.codePostal, c.codePostal) &&
+					Objects.equal(this.ville, c.ville);
+		}
+		
+		return state;
+	}
+	
 	public String getRue() {
 		return rue;
 	}
