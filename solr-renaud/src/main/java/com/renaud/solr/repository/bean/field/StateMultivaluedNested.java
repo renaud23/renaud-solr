@@ -11,6 +11,8 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.renaud.solr.annotation.SolrField;
 import com.renaud.solr.annotation.tools.ClassUtil;
@@ -52,55 +54,59 @@ public class StateMultivaluedNested<U> implements SolrFieldAccess<U>{
 	@SuppressWarnings("unchecked")
 	@Override
 	public void fillBean(U bean, SolrField a, Field f, Object value) {
-		
-		
 		try {
 			Class<?> typeListe =  PropertyUtils.getPropertyType(bean, f.getName());
 			Collection<U> cible = (Collection<U>) PropertyUtils.getProperty(bean, f.getName());
-			String nestedPropertyName = StringUtils.substring(a.property(), f.getName().length() + 1);
-			Class<?> classGeneric = (Class<?>) ((ParameterizedType) f.getGenericType()).getActualTypeArguments()[0];
-			
 			if(cible == null){
 				cible = (Collection<U>) ClassUtil.createCollection(typeListe);
+				PropertyUtils.setProperty(bean, f.getName(), cible);
 			}
-
-
-			
-	// TODO
-			
-			System.out.println(value.getClass());
+	
+			if(cible.isEmpty()){
+				this.firstFill(cible, bean, a, f, value);
+			} else {
+				this.fill(cible, bean, a, f, value);
+			}
 			
 		} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
 			throw new SolrRepositoryException("Impossible de remplir un bean.", e);
 		}
-		
-		
-		
-//		try {
-//			String listeName = f.getName();
-//			String beanName = StringUtils.substring(a.beanName(), listeName.length() + 1);
-//
-//			Class<?> typeListe = PropertyUtils.getPropertyType(bean, listeName);
-//			Collection<Object> collection = StateUtils.createCollection(typeListe);
-//
-//			if (solrValue != null && solrValue instanceof Collection) {
-//				ParameterizedType listeType = (ParameterizedType) f.getGenericType();
-//				Class<?> classGeneric = (Class<?>) listeType.getActualTypeArguments()[0];
-//				for (Object o : ((Collection<?>) solrValue)) {
-//					Object value = classGeneric.newInstance();
-//
-//					ReflectUtils.instanciateAttributs(beanName, value);
-//					Object oConverted = ConvertUtils.convert(o, PropertyUtils.getPropertyType(value, beanName));
-//					PropertyUtils.setProperty(value, beanName, oConverted);
-//					collection.add(value);
-//				}
-//			}
-//			if (collection != null)
-//				PropertyUtils.setProperty(bean, listeName, collection);
-//		}
-//		catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | InstantiationException e) {
-//			throw new SolrInseeException(ERROR_FILL_FIELD + f.getName(), e);
-//		}
 	}
 
+	
+	@SuppressWarnings("unchecked")
+	private void firstFill(Collection<U> cible, U bean, SolrField a, Field f, Object value){
+		String nestedPropertyName = StringUtils.substring(a.property(), f.getName().length() + 1);
+		Class<?> classGeneric = (Class<?>) ((ParameterizedType) f.getGenericType()).getActualTypeArguments()[0];
+		
+		for(Object v : (Iterable<?>) value){
+			try {
+				Object nb = classGeneric.newInstance();
+				ClassUtil.instanciateAttributs(nestedPropertyName, nb);
+				PropertyUtils.setProperty(nb, nestedPropertyName, v);
+				cible.add((U) nb);
+				
+			} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+				throw new SolrRepositoryException("Impossible de remplir un bean.", e);
+			}
+		}
+	}
+	
+	private void fill(Collection<?> cible, U bean, SolrField a, Field f, Object value){
+		int i = 0;
+		Object[] arr = cible.toArray();
+		String nestedPropertyName = StringUtils.substring(a.property(), f.getName().length() + 1);
+		for(Object v : (Iterable<?>) value){
+			if(!Objects.equal(v, NULL_ITERABLE_VALUE)){
+				try {
+					ClassUtil.instanciateAttributs(nestedPropertyName, arr[i]);
+					PropertyUtils.setProperty(arr[i], nestedPropertyName, v);
+				} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | InstantiationException e) {
+					throw new SolrRepositoryException("Impossible de remplir un bean.", e);
+				}
+			}
+			
+			i++;
+		}
+	}
 }
