@@ -3,11 +3,9 @@ package com.renaud.solr.repository.bean.field;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.renaud.solr.annotation.tools.CachAnnotation;
-import com.renaud.solr.repository.SolrRepositoryException;
 
 @Component
 public class FieldSimple<U> implements FieldAccess<U>{
@@ -26,8 +24,7 @@ public class FieldSimple<U> implements FieldAccess<U>{
 	}
 
 	@Override
-	public U makeBean(Field f, FieldMap value) {
-		throw new SolrRepositoryException("EN CHANTIER");
+	public void makeBean(U bean, Field f, FieldMap fieldMap) {
+		cachAnnotation.getSolrfieldAnnotation(f).stream().forEach(a->annotationAccessFactory.fillBean(bean, f, a,fieldMap.isField(a.field()) ? fieldMap.get(a.field()).getValue(): null));
 	}
-
 }

@@ -22,6 +22,10 @@ public class FieldMap implements Serializable{
 		}
 	}
 	
+	public boolean isField(String field){
+		return data.containsKey(field);
+	}
+	
 	public FieldValue get(String fieldName){
 		return data.get(fieldName);
 	}

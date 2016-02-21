@@ -26,8 +26,8 @@ public class FieldMultivalued<U> implements FieldAccess<U>{
 	}
 
 	@Override
-	public U makeBean(Field f, FieldMap value) {
-		throw new SolrRepositoryException("EN CHANTIER");
+	public void makeBean(U bean, Field f, FieldMap value) {
+		// TODO
 	}
 
 }

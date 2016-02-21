@@ -13,6 +13,7 @@ import com.renaud.solr.annotation.tools.CachAnnotation;
 import com.renaud.solr.repository.SolrRepositoryException;
 import com.renaud.solr.repository.bean.field.FieldValue;
 import com.renaud.solr.repository.bean.field.FieldAccess;
+import com.renaud.solr.repository.bean.field.FieldMap;
 
 @Component
 public class SolrBeanServiceImpl<U,ID extends Serializable> implements SolrBeanService<U, ID>{
@@ -40,68 +41,14 @@ public class SolrBeanServiceImpl<U,ID extends Serializable> implements SolrBeanS
 	}
 	@Override
 	public U createBean(List<FieldValue> fields, Class<U> clazz) {
-		throw new SolrRepositoryException("EN CHANTIER");
+		try {
+			U bean = clazz.newInstance();
+			Stream.of(cachAnnotation.getAnnotedFields(clazz, SolrField.class)).forEach(f->fieldAccessFactory.makeBean(bean, f, new FieldMap(fields)));
+			Stream.of(cachAnnotation.getAnnotedFields(clazz, SolrFields.class)).forEach(f->fieldAccessFactory.makeBean(bean, f, new FieldMap(fields)));
+			
+			return bean;
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new SolrRepositoryException("Impossible de créer un bean.", e);
+		}
 	}
-
-//	@Override
-//	public List<FieldValue> read(U bean) {
-//		List<FieldValue> values = Lists.newArrayList();
-//		Stream<T>.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrFields.class))
-//			.forEach((field)->{
-//				
-//						Stream.of(field.getAnnotation(SolrFields.class).value())
-//									.map((a)->{ return this.readBeanValues(bean, a, field); })
-//									.forEach(values::add);
-//			});
-//
-//		Stream.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrField.class))
-//					.map((field)->{ return this.readBeanValues(bean, field.getAnnotation(SolrField.class), field); })
-//					.forEach(values::add);
-//		
-//		return values;
-//	}
-//
-//	@Override
-//	public U fill(List<FieldValue> fields, Class<U> clazz) {
-//		try {
-//			U bean = clazz.newInstance();
-//			
-//			Stream.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrField.class))
-//			.filter(f->f.getAnnotation(SolrField.class).read())
-//			.forEach(
-//					(field)->{this.fill(bean, field.getAnnotation(SolrField.class), field, fields); });
-//			
-//			
-//			Stream.of(cachAnnotation.getAnnotedFields(bean.getClass(), SolrFields.class)).forEach(
-//					(field)->{
-//						Stream.of(field.getAnnotation(SolrFields.class).value())
-//						.filter(a->a.read())
-//						.forEach(
-//								(a)->{ this.fill(bean, a, field, fields); });
-//					});
-//			 
-//			return bean;
-//		} catch (InstantiationException | IllegalAccessException e) {
-//			throw new SolrRepositoryException("");
-//		}
-//	}
-
-//	@Override
-//	public FieldValue readBeanValues(U bean, SolrField a, Field f){
-//		return stateFieldFactory.readBeanValues(bean, a, f);
-//	}
-//
-//	@Override
-//	public void fillBean(U bean, SolrField a, Field f, Object value) {
-//		stateFieldFactory.fillBean(bean, a, f, value);
-//		
-//	}
-//	
-//	private void fill(U bean, SolrField a, Field field,  List<FieldValue> fields){
-//		try{
-//			Object value = fields.stream().filter((f)-> {return Objects.equal(f.getName(), a.field());}).findFirst().get().getValue();
-//			this.fillBean(bean, a, field, value);
-//		}catch(NoSuchElementException e){}
-//	}
-	
 }

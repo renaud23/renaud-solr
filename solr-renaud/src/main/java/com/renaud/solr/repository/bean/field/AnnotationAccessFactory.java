@@ -1,12 +1,10 @@
 package com.renaud.solr.repository.bean.field;
 
 import java.lang.reflect.Field;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.renaud.solr.annotation.SolrField;
-import com.renaud.solr.repository.SolrRepositoryException;
 
 
 @Component
@@ -24,7 +22,7 @@ public class AnnotationAccessFactory<U> implements AnnotationAccess<U>{
 
 	@Override
 	public void fillBean(U bean, Field f, SolrField a, Object value) {
-		throw new SolrRepositoryException("EN CHANTIER");
+		getStrategy(bean, f, a).fillBean(bean, f, a, value);
 	}
 
 

@@ -8,6 +8,6 @@ import java.util.List;
 public interface FieldAccess<U> {
 	List<FieldValue> readBeanValues(U bean, Field f);
 	
-	U makeBean(Field f, FieldMap value);
+	void makeBean(U bean, Field f, FieldMap value);
 
 }

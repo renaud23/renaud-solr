@@ -15,7 +15,7 @@ public class AnnotationNested<U> implements AnnotationAccess<U>{
 
 	@Override
 	public void fillBean(U bean, Field f, SolrField a, Object value) {
-		throw new SolrRepositoryException("EN CHANTIER");
+		// TODO
 	}
 
 
