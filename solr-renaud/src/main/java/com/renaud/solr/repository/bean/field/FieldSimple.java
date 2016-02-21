@@ -14,12 +14,13 @@ public class FieldSimple<U> implements FieldAccess<U>{
 	private CachAnnotation cachAnnotation;
 	@Autowired
 	private AnnotationAccess<U> annotationAccessFactory;
-	
+
 	@Override
 	public List<FieldValue> readBeanValues(U bean, Field f) {
 		return cachAnnotation.getSolrfieldAnnotation(f)
 			.stream()
 			.map(a->annotationAccessFactory.readBeanValues(bean, f, a))
+			.filter(a -> a != null)
 			.collect(Collectors.toList());
 	}
 
