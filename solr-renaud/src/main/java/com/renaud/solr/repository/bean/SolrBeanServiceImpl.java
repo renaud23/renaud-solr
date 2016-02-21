@@ -83,8 +83,7 @@ public class SolrBeanServiceImpl<U,ID extends Serializable> implements SolrBeanS
 	
 	private void fill(U bean, SolrField a, Field field,  List<FieldValue> fields){
 		try{
-			Object value = fields.stream().filter((f)-> {return Objects.equal(f.getName(), a.field());}).findFirst().get().getValue();
-			this.fillBean(bean, a, field, value);
+			this.fillBean(bean, a, field, fields);
 		}catch(NoSuchElementException e){}
 	}
 	

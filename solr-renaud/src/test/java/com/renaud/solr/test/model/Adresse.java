@@ -7,6 +7,8 @@ import com.renaud.solr.annotation.SolrField;
 @SolrEntity
 public class Adresse {
 	
+	public static int ID = 0;
+	
 	@SolrField(field = "id")
 	private String id;
 	@SolrField(field = "adresse_rue")
@@ -94,12 +96,7 @@ public class Adresse {
 		}
 		
 		public Adresse build(){
-			a.id =  Objects.toStringHelper("Adresse:")
-				       .add("numero", a.numero)
-				       .add("rue", a.rue)
-				       .add("codePostal", a.codePostal)
-				       .add("ville", a.ville)
-				       .toString();
+			this.a.id = String.valueOf(ID++);
 			return a;
 		}
 		

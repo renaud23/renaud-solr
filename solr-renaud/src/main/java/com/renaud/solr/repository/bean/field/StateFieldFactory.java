@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -28,18 +30,27 @@ public class StateFieldFactory<U> implements SolrFieldAccess<U>{
 	
 	@Override
 	public void fillBean(U bean, SolrField a, Field f, Object value) {
-		getStrategy(bean, a, f).fillBean(bean, a, f, value);
+
+//		Object value = fields.stream().filter((f)-> {return Objects.equal(f.getName(), a.field());}).findFirst().get().getValue();
+		Pair<SolrFieldAccess<U>, Object> pair = getStrategyValue(bean, a, f, value);
+		pair.getLeft().fillBean(bean, a, f, pair.getRight());
 	}
 	
-	private SolrFieldAccess<U> getStrategy(U bean, SolrField a, Field f){
+	private Pair<SolrFieldAccess<U>, Object> getStrategyValue(U bean, SolrField a, Field f, Object value){
 		Assert.notNull(bean, "Le bean be doit pas être null.");
-		SolrFieldAccess<U> strategy = null;
+		SolrFieldAccess<U> strategy = getStrategy(bean, a, f);
+		Object v = null;
 		
-		boolean nested = !StringUtils.isBlank(a.property());
-		boolean iterable = false;
-		try {
-			iterable = Iterable.class.isAssignableFrom(PropertyUtils.getPropertyType(bean, f.getName()));
-		} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {}
+		
+		
+		
+		return new MutablePair<>(strategy, v);
+	}
+	
+	
+	private SolrFieldAccess<U> getStrategy(boolean nested, boolean iterable){
+		SolrFieldAccess<U> strategy = null;
+	
 		if(!nested && !iterable){
 			strategy = stateSimple;
 		} else if(nested && !iterable){
@@ -51,7 +62,20 @@ public class StateFieldFactory<U> implements SolrFieldAccess<U>{
 		} else {
 			throw new SolrRepositoryException("Stratégie non reconnue.");
 		}
+		
 		return strategy;
+	}
+	
+	private SolrFieldAccess<U> getStrategy(U bean, SolrField a, Field f){
+		Assert.notNull(bean, "Le bean be doit pas être null.");
+		
+		boolean nested = !StringUtils.isBlank(a.property());
+		boolean iterable = false;
+		try {
+			iterable = Iterable.class.isAssignableFrom(PropertyUtils.getPropertyType(bean, f.getName()));
+		} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {}
+		
+		return getStrategy(nested, iterable);
 	}
 
 }

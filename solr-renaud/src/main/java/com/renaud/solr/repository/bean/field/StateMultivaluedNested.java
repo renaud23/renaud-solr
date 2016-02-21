@@ -6,6 +6,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -83,7 +84,8 @@ public class StateMultivaluedNested<U> implements SolrFieldAccess<U>{
 			try {
 				Object nb = classGeneric.newInstance();
 				ClassUtil.instanciateAttributs(nestedPropertyName, nb);
-				PropertyUtils.setProperty(nb, nestedPropertyName, v);
+				Object oConverted = ConvertUtils.convert(v, PropertyUtils.getPropertyType(nb, nestedPropertyName));
+				PropertyUtils.setProperty(nb, nestedPropertyName, oConverted);
 				cible.add((U) nb);
 				
 			} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
@@ -100,7 +102,8 @@ public class StateMultivaluedNested<U> implements SolrFieldAccess<U>{
 			if(!Objects.equal(v, NULL_ITERABLE_VALUE)){
 				try {
 					ClassUtil.instanciateAttributs(nestedPropertyName, arr[i]);
-					PropertyUtils.setProperty(arr[i], nestedPropertyName, v);
+					Object oConverted = ConvertUtils.convert(v, PropertyUtils.getPropertyType(arr[i], nestedPropertyName));
+					PropertyUtils.setProperty(arr[i], nestedPropertyName, oConverted);
 				} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | InstantiationException e) {
 					throw new SolrRepositoryException("Impossible de remplir un bean.", e);
 				}

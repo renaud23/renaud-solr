@@ -78,12 +78,11 @@ public class SolrCrudRepositoryClientTest extends BaseTest{
 	public void findMultivaluedNested(){
 		// G
 		Client contact1 = Client.Builder.newInstance()
-				.setId("francis@cabrel")
+				.setId("francis@cabrel@toulouse")
 				.setAdresse(Adresse.Builder.newInstance().setVille("toulouse").build())
-				.setPrenom("bob")
 				.build();
 		Client contact2 = Client.Builder.newInstance()
-				.setId("joe@dimembro")
+				.setId("joe@dimembro@sdf")
 				.build();
 		Client o = Client.Builder.newInstance()
 				.setId("bob@marley")

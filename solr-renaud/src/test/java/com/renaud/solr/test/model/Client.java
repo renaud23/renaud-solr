@@ -40,6 +40,7 @@ public class Client {
 				.add("nom", nom)
 				.add("adresse", adresse)
 				.add("tags", tags)
+				.add("contacts", contacts)
 				.toString();
 	}
 	
