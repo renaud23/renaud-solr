@@ -56,6 +56,23 @@ public class SolrCrudRepositoryClientTest extends BaseTest{
 		Assert.assertEquals(new Integer(3), c.getAdresse().getNumero());
 	}
 	
+	
+	@Test
+	public void findSimple(){
+		// G
+		Client o = Client.Builder.newInstance()
+				.setId("renaud@genevois")
+				.setPrenom("renaud")
+				.setNom("genevois")
+				.build();
+		clientRepository.save(o);
+		// W
+		Client c = clientRepository.findOne("renaud@genevois");
+		// T
+		Assert.assertNotNull(c);
+		Assert.assertEquals(o, c);
+	}
+	
 	@Test
 	public void findMultivalued(){
 		// G

@@ -50,7 +50,7 @@ public class SolrCrudRepository <T, ID extends Serializable> implements SolrRepo
 		logger.debug("Save entity " + entity.toString());
 		SolrInputDocument document = new SolrInputDocument();
 		solrBeanService
-			.read(entity)
+			.readBean(entity)
 			.stream()
 			.filter((field)-> {return field.getValue() != null && !StringUtils.isBlank(field.getName());})
 			.forEach((field)->{ document.addField(field.getName(), field.getValue()); });
@@ -72,7 +72,7 @@ public class SolrCrudRepository <T, ID extends Serializable> implements SolrRepo
 		for(S entity : entities){
 			SolrInputDocument document = new SolrInputDocument();			
 			solrBeanService
-				.read(entity)
+				.readBean(entity)
 				.stream()
 				.filter((field)-> {return field.getValue() != null && !StringUtils.isBlank(field.getName());})
 				.forEach((field)->{ document.addField(field.getName(), field.getValue()); });
@@ -100,7 +100,7 @@ public class SolrCrudRepository <T, ID extends Serializable> implements SolrRepo
 											.setValue(document.get(name)).build(); })
 							.collect(Collectors.toList());
 				
-				return solrBeanService.fill(fields, domainClass);	
+				return solrBeanService.createBean(fields, domainClass);	
 			} else {
 				return null;
 			}
@@ -141,7 +141,7 @@ public class SolrCrudRepository <T, ID extends Serializable> implements SolrRepo
 											.setValue(document.get(name)).build(); })
 							.collect(Collectors.toList());
 				
-				 documents.add(solrBeanService.fill(fields, domainClass));
+				 documents.add(solrBeanService.createBean(fields, domainClass));
 			}
 			SimpleResponse<T> response = new SimpleResponse<>();
 			response.setDocuments(documents);

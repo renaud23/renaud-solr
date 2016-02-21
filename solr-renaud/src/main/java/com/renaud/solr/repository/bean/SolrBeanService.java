@@ -7,8 +7,8 @@ import com.renaud.solr.repository.bean.field.FieldValue;
 
 public interface SolrBeanService<U, ID extends Serializable> {
 	
-	public List<FieldValue> read(U u);
+	public List<FieldValue> readBean(U u);
 	
-	public U fill(List<FieldValue> fields, Class<U> clazz);
+	public U createBean(List<FieldValue> fields, Class<U> clazz);
 	
 }
