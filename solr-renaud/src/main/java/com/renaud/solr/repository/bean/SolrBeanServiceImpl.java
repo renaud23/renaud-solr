@@ -28,23 +28,25 @@ public class SolrBeanServiceImpl<U,ID extends Serializable> implements SolrBeanS
 		Assert.notNull(u, "Impossible de traiter un objet null.");
 		List<FieldValue> values = Lists.newArrayList();
 		Stream.of(cachAnnotation.getAnnotedFields(u.getClass(), SolrField.class))
-				.map((f)->{
-					return fieldAccessFactory.readBeanValues(u, f);
-				}).forEach(values::addAll);
-		
+			.map(f->fieldAccessFactory.readBeanValues(u, f))
+			.filter(a-> a != null)
+			.forEach(values::addAll);
 		Stream.of(cachAnnotation.getAnnotedFields(u.getClass(), SolrFields.class))
-			.map((f)->{
-				return fieldAccessFactory.readBeanValues(u, f);
-			}).forEach(values::addAll);
+			.map(f->fieldAccessFactory.readBeanValues(u, f))
+			.filter(a-> a != null)
+			.forEach(values::addAll);
 		
 		return values;
 	}
+	
 	@Override
 	public U createBean(List<FieldValue> fields, Class<U> clazz) {
 		try {
 			U bean = clazz.newInstance();
-			Stream.of(cachAnnotation.getAnnotedFields(clazz, SolrField.class)).forEach(f->fieldAccessFactory.makeBean(bean, f, new FieldMap(fields)));
-			Stream.of(cachAnnotation.getAnnotedFields(clazz, SolrFields.class)).forEach(f->fieldAccessFactory.makeBean(bean, f, new FieldMap(fields)));
+			Stream.of(cachAnnotation.getAnnotedFields(clazz, SolrField.class))
+				.forEach(f->fieldAccessFactory.makeBean(bean, f, new FieldMap(fields)));
+			Stream.of(cachAnnotation.getAnnotedFields(clazz, SolrFields.class))
+				.forEach(f->fieldAccessFactory.makeBean(bean, f, new FieldMap(fields)));
 			
 			return bean;
 		} catch (InstantiationException | IllegalAccessException e) {
