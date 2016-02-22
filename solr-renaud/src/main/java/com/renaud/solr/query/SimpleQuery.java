@@ -1,9 +1,6 @@
 package com.renaud.solr.query;
 
 import java.util.List;
-
-import org.apache.solr.client.solrj.SolrQuery;
-
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.renaud.solr.query.filter.Filter;

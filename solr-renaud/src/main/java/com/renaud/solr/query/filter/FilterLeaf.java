@@ -1,9 +1,7 @@
 package com.renaud.solr.query.filter;
 
 import org.springframework.util.Assert;
-
 import com.google.common.base.Objects;
-import com.renaud.solr.query.SimpleQuery;
 
 public class FilterLeaf implements Filter{
 
