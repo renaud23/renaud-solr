@@ -1,4 +1,4 @@
-package com.renaud.splr.query.pageable;
+package com.renaud.solr.query.pageable;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

@@ -1,4 +1,4 @@
-package com.renaud.splr.query.pageable;
+package com.renaud.solr.query.pageable;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

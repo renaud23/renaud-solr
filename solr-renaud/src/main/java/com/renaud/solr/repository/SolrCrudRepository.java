@@ -22,12 +22,12 @@ import com.google.common.collect.Lists;
 import com.renaud.solr.config.SolrRepository;
 import com.renaud.solr.query.Query;
 import com.renaud.solr.query.SimpleQuery;
+import com.renaud.solr.query.pageable.DocumentIterable;
 import com.renaud.solr.query.result.SimpleResponse;
 import com.renaud.solr.query.result.SolrResponse;
 import com.renaud.solr.repository.bean.SolrBeanService;
 import com.renaud.solr.repository.bean.field.FieldValue;
 import com.renaud.solr.repository.server.SolrClientFactory;
-import com.renaud.splr.query.pageable.DocumentIterable;
 
 public class SolrCrudRepository <T, ID extends Serializable> implements SolrRepository<T, ID> {
 	
